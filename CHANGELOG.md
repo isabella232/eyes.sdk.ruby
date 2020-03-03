@@ -1,3 +1,8 @@
+### Added
+- dom_snapshot is uploaded directly to Azure storage
+### Fixed
+- dom_snapshot script updated to 7.1.3
+- send_dom is true by default for EyesSelenium
 ## [Eyes.sdk.ruby 3.16.6] - 2020-03-05
 ### Fixed
 - eyes#check might be called as #check(tag, target) as well as #check(target)
