@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require_relative 'test_double_open_close'
-require 'pry'
 
 RSpec.describe 'VG special cases' do
   before(:context) do

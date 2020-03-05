@@ -15,7 +15,16 @@ Bundler::GemHelper.install_tasks name: 'eyes_appium'
 
 unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
   require 'rspec/core/rake_task'
+  require 'webdrivers'
+  load 'webdrivers/Rakefile'
+  require 'parallel_tests/tasks'
+  RSpec::Core::RakeTask.new(:spec)
   RSpec::Core::RakeTask.new(:spec_selenium) do |t|
+    t.pattern = 'spec/integration/*_spec.rb'
+    t.rspec_opts = '--tag selenium'
+  end
+
+  RSpec::Core::RakeTask.new(:spec_vg) do |t|
     t.pattern = 'spec/integration/*_spec.rb'
     t.rspec_opts = '--tag selenium'
   end
@@ -28,16 +37,31 @@ unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
   task :set_batch_info do
     string = ENV['TRAVIS_COMMIT'] ? ENV['TRAVIS_COMMIT'] + ENV['TRAVIS_RUBY_VERSION'] : SecureRandom.hex
     batch_id = `(java UUIDFromString #{string})`
-    next if ENV['APPLITOOLS_BATCH_ID'] && !ENV['APPLITOOLS_BATCH_ID'].empty?
-    ENV['APPLITOOLS_BATCH_ID'] = batch_id
+    # next if ENV['APPLITOOLS_BATCH_ID'] && !ENV['APPLITOOLS_BATCH_ID'].empty?
+    ENV['APPLITOOLS_BATCH_ID'] = batch_id unless ENV['APPLITOOLS_BATCH_ID'] && !ENV['APPLITOOLS_BATCH_ID'].empty?
     ENV['APPLITOOLS_BATCH_NAME'] = "Eyes Ruby SDK(#{RUBY_VERSION})"
   end
   task :check do
-    puts ENV['APPLITOOLS_BATCH_ID']
-    puts ENV['APPLITOOLS_BATCH_NAME']
+    puts "Batch ID: #{ENV['APPLITOOLS_BATCH_ID']}"
+    puts "Batch NAME: #{ENV['APPLITOOLS_BATCH_NAME']}"
   end
-  task visual_tests: [:set_batch_info, :check, :spec_selenium]
-  task :default => :visual_tests
+  # task rspec_travis: [:spec_selenium]
+  # task visual_tests: [:set_batch_info, :check, :spec_selenium]
+  task :default => :parallel_travis
+  task :parallel_travis => ['webdrivers:chromedriver:update', :set_batch_info, :check] do
+    # Rake::Task['parallel:spec'.to_sym].invoke(4, 'spec\/integration\/(?!old_tests)', ' --tag=selenium')
+    sh('bundle exec parallel_rspec -n 4 -- --tag selenium -- spec/integration/*_spec.rb')
+  end
+
+  task :travis_selenium => ['webdrivers:chromedriver:update', :set_batch_info, :check] do
+    sh('bundle exec parallel_rspec -n 4 -- --tag selenium -- spec/integration/*_spec.rb')
+  end
+
+  task :travis_vg => ['webdrivers:chromedriver:update', :set_batch_info, :check] do
+    sh('bundle exec parallel_rspec -n 1 -- --tag visual_grid -- spec/integration/*_spec.rb')
+  end
+
+
   # case ENV['END_TO_END_TESTS']
   # when 'false'
   #   require 'rspec/core/rake_task'
