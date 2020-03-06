@@ -1,3 +1,4 @@
+## [Eyes.sdk.ruby 3.16.7] - 2020-03-06
 ### Added
 - dom_snapshot is uploaded directly to Azure storage
 ### Fixed
