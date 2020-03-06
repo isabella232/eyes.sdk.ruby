@@ -2,12 +2,13 @@
 
 module Applitools
   class Future
-    attr_accessor :result, :semaphore, :block, :thread
+    attr_accessor :result, :semaphore, :block, :thread, :description
 
-    def initialize(semaphore, &block)
+    def initialize(semaphore, description = nil, &block)
       raise Applitools::EyesIllegalArgument, 'Applitools::Future must be initialized with a block' unless block_given?
       self.block = block
       self.semaphore = semaphore
+      self.description = description
       self.thread = Thread.new do
         begin
           self.result = yield(semaphore)
@@ -20,7 +21,8 @@ module Applitools
     end
 
     def get
-      thread.join(15)
+      thread.join(350)
+      raise Applitools::EyesError, "Failed to execute future - got nil result! (#{description})" if result.nil?
       result
     end
   end

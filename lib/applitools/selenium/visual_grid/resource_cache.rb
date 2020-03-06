@@ -36,7 +36,7 @@ module Applitools
         semaphore.synchronize do
           return cache_map[key] if check_key(key)
           return unless block_given?
-          cache_map[key] = Applitools::Future.new(semaphore) do |semaphore|
+          cache_map[key] = Applitools::Future.new(semaphore, "ResourceCache - #{key}") do |semaphore|
             yield(semaphore, key)
           end
           return true if cache_map[key].is_a? Applitools::Future

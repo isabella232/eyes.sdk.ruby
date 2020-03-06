@@ -221,13 +221,17 @@ module Applitools
         resource_urls.each do |u|
           begin
             request_resources[u] = resource_cache[u]
-          rescue Applitools::Selenium::RenderResources => e
+          rescue Applitools::EyesError => e
             Applitools::EyesLogger.error(e.message)
           end
         end
 
         discovered_resources.each do |u|
-          request_resources[u] = resource_cache[u]
+          begin
+            request_resources[u] = resource_cache[u]
+          rescue Applitools::EyesError => e
+            Applitools::EyesLogger.error(e.message)
+          end
         end
 
         Applitools::Selenium::RGridDom.new(

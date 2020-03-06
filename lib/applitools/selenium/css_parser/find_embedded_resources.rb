@@ -49,7 +49,7 @@ module Applitools
         end
 
         def fetch_urls(nodes)
-          nodes.map { |n| url(n) }.flatten.compact
+          nodes.map { |n| url(n) }.flatten.compact #rescue []
         end
 
         def import_rules
@@ -75,17 +75,20 @@ module Applitools
 
         def nodes_by_type
           return @nodes_by_type unless @nodes_by_type.empty?
+          @nodes_by_type[:import_rules] ||= []
+          @nodes_by_type[:font_face_rules] ||= []
+          @nodes_by_type[:images_rules] ||= []
           css_nodes.each do |n|
-            @nodes_by_type[:import_rules] ||= []
-            @nodes_by_type[:font_face_rules] ||= []
-            @nodes_by_type[:images_rules] ||= []
             @nodes_by_type[:import_rules] << n if n[:node] == :at_rule && n[:name] == 'import'
             @nodes_by_type[:font_face_rules] << n if n[:node] == :at_rule && n[:name] == 'font-face'
             @nodes_by_type[:images_rules] << n if n[:node] == :style_rule
           end
-          @nodes_by_type[:images_rules].map! { |n| n[:children] }.flatten!
-          @nodes_by_type[:images_rules] = @nodes_by_type[:images_rules].select do |n|
-            n[:node] == :property && (n[:name] == 'background' || n[:name] == 'background-image')
+
+          unless @nodes_by_type[:images_rules].nil?
+            @nodes_by_type[:images_rules].map! { |n| n[:children] }.flatten!
+            @nodes_by_type[:images_rules] = @nodes_by_type[:images_rules].select do |n|
+              n[:node] == :property && (n[:name] == 'background' || n[:name] == 'background-image')
+            end
           end
           @nodes_by_type
         end

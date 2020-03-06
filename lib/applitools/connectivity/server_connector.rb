@@ -159,8 +159,9 @@ module Applitools::Connectivity
           proxy: @proxy.nil? ? nil : @proxy.to_hash
         ).send(:get) do |req|
           req.options.timeout = DEFAULT_TIMEOUT
-          req.headers['Accept-Encoding'] = 'identity'
-          req.headers['User-Agent'] = ua_string if ua_string
+          req.headers[:accept_encoding] = 'identity'
+          req.headers[:accept_language] = 'en'
+          req.headers[:user_agent] = ua_string if ua_string
         end
       end
       response = resp_proc.call(url)
@@ -169,7 +170,7 @@ module Applitools::Connectivity
         redirect_count -= 1
         response = resp_proc.call(response.headers['location'])
       end
-      Applitools::EyesLogger.debug 'Done!'
+      Applitools::EyesLogger.debug "Done. (#{url} #{response.status})"
       response
     end
 
