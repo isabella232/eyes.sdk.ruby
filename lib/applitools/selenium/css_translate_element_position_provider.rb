@@ -31,6 +31,8 @@ module Applitools::Selenium
       logger.info 'Done scrolling element!'
     end
 
+    alias scroll_to position=
+
     private
 
     def transforms_offset
