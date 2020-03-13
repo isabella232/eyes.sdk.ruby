@@ -1,3 +1,10 @@
+## [Eyes.sdk.ruby 3.16.8] - 2020-03-13
+## Fixed
+- SDK fetch resources: the request header 'Accept-Language' is used along with 'User-Agent'
+- Timeout for Thread.join is increased up to Faraday's connection timeout
+- Error handling for resources that failed to fetch
+## Added
+-  Log messages for resource fetching now include the URL and status code
 ## [Eyes.sdk.ruby 3.16.7] - 2020-03-06
 ### Added
 - dom_snapshot is uploaded directly to Azure storage
