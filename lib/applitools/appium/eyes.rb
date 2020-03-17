@@ -10,6 +10,7 @@ class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
     super
     self.dont_get_title = true
     self.runner = Applitools::ClassicRunner.new
+    self.base_agent_id = "eyes.appium.ruby/#{Applitools::VERSION}".freeze
   end
 
   private :perform_driver_settings_for_appium_driver

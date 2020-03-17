@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.16.9] - 2020-03-17
+## Fixed
+- Agent ID for eyes_appium set to eyes.appium.ruby/version
 ## [Eyes.sdk.ruby 3.16.8] - 2020-03-13
 ## Fixed
 - SDK fetch resources: the request header 'Accept-Language' is used along with 'User-Agent'
