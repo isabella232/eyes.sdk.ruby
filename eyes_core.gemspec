@@ -31,6 +31,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'oily_png', '~> 1.2'
   spec.add_dependency 'chunky_png', '= 1.3.6'
   spec.add_dependency 'faraday'
+  spec.add_dependency 'faraday_middleware'
+  spec.add_dependency 'faraday-cookie_jar'
   spec.add_dependency 'oj'
 
   spec.add_development_dependency 'bundler'

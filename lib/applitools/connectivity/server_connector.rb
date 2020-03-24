@@ -1,6 +1,8 @@
 # frozen_string_literal: false
 
 require 'faraday'
+require 'faraday_middleware'
+require 'faraday-cookie_jar'
 require 'oj'
 require 'securerandom'
 
@@ -10,6 +12,10 @@ require 'uri'
 
 module Applitools::Connectivity
   class ServerConnector
+    class << self
+      attr_accessor :faraday_adapter, :connection_timeout
+    end
+    self.faraday_adapter = :net_http
     class ScreenshotUploadError < Applitools::EyesError; end
     extend Applitools::Helpers
     DEFAULT_SERVER_URL = 'https://eyesapi.applitools.com'.freeze
@@ -153,23 +159,14 @@ module Applitools::Connectivity
     def download_resource(url, ua_string = nil)
       Applitools::EyesLogger.debug "Fetching #{url}..."
       resp_proc = proc do |u|
-        Faraday::Connection.new(
-          u,
-          ssl: { ca_file: SSL_CERT },
-          proxy: @proxy.nil? ? nil : @proxy.to_hash
-        ).send(:get) do |req|
-          req.options.timeout = DEFAULT_TIMEOUT
+        faraday_connection(u).send(:get) do |req|
+          req.options.timeout = self.class.connection_timeout || DEFAULT_TIMEOUT
           req.headers[:accept_encoding] = 'identity'
-          req.headers[:accept_language] = 'en'
+          req.headers[:accept_language] = '*'
           req.headers[:user_agent] = ua_string if ua_string
         end
       end
       response = resp_proc.call(url)
-      redirect_count = 10
-      while response.status == 301 && redirect_count > 0
-        redirect_count -= 1
-        response = resp_proc.call(response.headers['location'])
-      end
       Applitools::EyesLogger.debug "Done. (#{url} #{response.status})"
       response
     end
@@ -300,6 +297,18 @@ module Applitools::Connectivity
 
     private
 
+    def faraday_connection(url)
+      Faraday.new(
+        url: url,
+        ssl: { ca_file: SSL_CERT },
+        proxy: @proxy.nil? ? nil : @proxy.to_hash
+      ) do |faraday|
+        faraday.use FaradayMiddleware::FollowRedirects
+        faraday.use :cookie_jar
+        faraday.adapter self.class.faraday_adapter
+      end
+    end
+
     DEFAULT_HEADERS = {
       'Accept' => 'application/json',
       'Content-Type' => 'application/json'
@@ -338,11 +347,7 @@ module Applitools::Connectivity
 
     def request(url, method, options = {})
       Applitools::EyesLogger.debug("Requesting #{url} (method: #{method})")
-      response = Faraday::Connection.new(
-        url,
-        ssl: { ca_file: SSL_CERT },
-        proxy: @proxy.nil? ? nil : @proxy.to_hash
-      ).send(method) do |req|
+      response = faraday_connection(url).send(method) do |req|
         req.options.timeout = DEFAULT_TIMEOUT
         req.headers = DEFAULT_HEADERS.merge(options[:headers] || {})
         req.headers['Content-Type'] = options[:content_type] if options.key?(:content_type)
@@ -354,11 +359,7 @@ module Applitools::Connectivity
     end
 
     def dummy_request(url, method, options = {})
-      Faraday::Connection.new(
-        url,
-        ssl: { ca_file: SSL_CERT },
-        proxy: @proxy.nil? ? nil : @proxy.to_hash
-      ).send(method) do |req|
+      faraday_connection(url).send(method) do |req|
         req.options.timeout = options[:timeout] || DEFAULT_TIMEOUT
         req.headers = DEFAULT_HEADERS.merge(options[:headers] || {})
         req.headers['Content-Type'] = options[:content_type] if options.key?(:content_type)

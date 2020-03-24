@@ -1,3 +1,8 @@
+## [Eyes.sdk.ruby 3.16.10] - 2020-03-24
+## Added
+- The ability to use different Faraday adapters instead the default one [Trello 1683](https://trello.com/c/6IASHoBB/1683-add-http2-support-to-the-communication-library)
+- The ability to set up timeout for HTTP request
+- The ability to set up timeout for an Applitools::Future
 ## [Eyes.sdk.ruby 3.16.9] - 2020-03-17
 ## Fixed
 - Agent ID for eyes_appium set to eyes.appium.ruby/version

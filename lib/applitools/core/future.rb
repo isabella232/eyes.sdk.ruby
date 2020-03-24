@@ -3,6 +3,11 @@
 module Applitools
   class Future
     attr_accessor :result, :semaphore, :block, :thread, :description
+    DEFAULT_TIMEOUT = 350
+    class << self
+      attr_accessor :timeout
+    end
+    self.timeout = DEFAULT_TIMEOUT
 
     def initialize(semaphore, description = nil, &block)
       raise Applitools::EyesIllegalArgument, 'Applitools::Future must be initialized with a block' unless block_given?
@@ -21,7 +26,7 @@ module Applitools
     end
 
     def get
-      thread.join(350)
+      thread.join(self.class.timeout)
       raise Applitools::EyesError, "Failed to execute future - got nil result! (#{description})" if result.nil?
       result
     end
