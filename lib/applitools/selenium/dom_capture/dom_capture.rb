@@ -61,7 +61,6 @@ module Applitools
       rescue StandardError => e
         logger.error(e.class)
         logger.error(e.message)
-        logger.error(e)
         return ''
       end
 
@@ -107,23 +106,27 @@ module Applitools
           logger.info "Switching to frame line: #{missing_frame_line}"
           missing_frame_line.split(/,/).each do |xpath|
             logger.info "switching to specific frame: #{xpath}"
-            frame_element = driver.find_element(:xpath, xpath)
-            frame_src = frame_element.attribute('src')
-            driver.switch_to.frame(frame_element)
-            logger.info "Switched to frame ( #{xpath} ) with src( #{frame_src} )"
-          end
-          location_after_switch = driver.execute_script('return document.location.href')
+            begin
+              frame_element = driver.find_element(:xpath, xpath)
+              frame_src = frame_element.attribute('src')
+              driver.switch_to.frame(frame_element)
+              logger.info "Switched to frame ( #{xpath} ) with src( #{frame_src} )"
+            ensure
+              location_after_switch = driver.execute_script('return document.location.href')
 
-          if origin_location == location_after_switch
-            logger.info "Switch to frame (#{missing_frame_line}) failed"
-            frame_data[missing_frame_line] = ''
-          else
-            result = get_frame_dom(driver, server_connector, logger)
-            frame_data[missing_frame_line] = result
+              if origin_location == location_after_switch
+                logger.info "Switch to frame (#{missing_frame_line}) failed"
+                frame_data[missing_frame_line] = ''
+              else
+                result = get_frame_dom(driver, server_connector, logger)
+                frame_data[missing_frame_line] = result
+              end
+
+              driver.switch_to.default_content
+              driver.switch_to.frames(frame_chain: frame_chain)
+            end
           end
         end
-        driver.switch_to.default_content
-        driver.switch_to.frames(frame_chain: frame_chain)
         frame_data
       end
 

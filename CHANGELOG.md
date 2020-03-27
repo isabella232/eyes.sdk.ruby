@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.16.11] - 2020-03-27
+## Fixed
+- dom_capture threw an exception on a particular page [Trello 1658](https://trello.com/c/x0uYFwx0/1658-test-is-being-aborted-when-trying-to-capture-dom-ruby)
 ## [Eyes.sdk.ruby 3.16.10] - 2020-03-24
 ## Added
 - The ability to use different Faraday adapters instead the default one [Trello 1683](https://trello.com/c/6IASHoBB/1683-add-http2-support-to-the-communication-library)
