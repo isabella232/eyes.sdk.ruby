@@ -42,7 +42,7 @@ RSpec.describe 'TestSendDom' do
         )
         results = eyes.close(false)
         has_dom = get_has_dom_(eyes.api_key, results)
-        # expect(actual_dom_json_string).to eq expected_dom_json
+        expect(actual_dom_json_string).to eq expected_dom_json
         expect(has_dom).to be_truthy
 
         session_results = TestUtils.get_session_results(eyes.api_key, results)

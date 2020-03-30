@@ -31,7 +31,6 @@ module Applitools
         self.options = {
           ignore_caret: true,
           ignore_mismatch: false,
-          send_dom: true,
           script_hooks: { beforeCaptureScreenshot: '' }
         }
         self.regions = {}

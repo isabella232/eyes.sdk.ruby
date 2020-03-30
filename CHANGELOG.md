@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.16.12] - 2020-03-30
+## Fixed
+- eyes#send_dom didn't work [Trello 1659](https://trello.com/c/9CfD0fhn/1659-disable-dom-capturing-is-not-working-on-the-test-level-ruby)
 ## [Eyes.sdk.ruby 3.16.11] - 2020-03-27
 ## Fixed
 - dom_capture threw an exception on a particular page [Trello 1658](https://trello.com/c/x0uYFwx0/1658-test-is-being-aborted-when-trying-to-capture-dom-ruby)

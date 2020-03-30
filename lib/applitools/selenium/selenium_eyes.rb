@@ -132,7 +132,7 @@ module Applitools::Selenium
       self.force_driver_resolution_as_viewport_size = false
       self.stitching_overlap = DEFAULT_STITCHING_OVERLAP
       self.full_page_capture_algorithm_left_top_offset = Applitools::Location::TOP_LEFT
-      self.send_dom = false
+      self.send_dom = true
       self.use_dom = false
       self.enable_patterns = false
       self.prevent_dom_processing = false
@@ -258,9 +258,11 @@ module Applitools::Selenium
 
       # self.prevent_dom_processing = !((!target.options[:send_dom].nil? && target.options[:send_dom]) ||
       #     send_dom || stitch_mode == Applitools::STITCH_MODE[:css])
+      #
+      # require 'pry'
+      # binding.pry
 
-      self.prevent_dom_processing = !((!target.options[:send_dom].nil? && target.options[:send_dom]) ||
-          send_dom)
+      self.prevent_dom_processing = send_dom?(target_to_check) ? false : true
 
       check_in_frame target_frames: target_to_check.frames do
         begin
@@ -382,6 +384,11 @@ module Applitools::Selenium
         return {}
       end
     end
+
+    def send_dom?(target)
+      target.options[:send_dom].nil? ? send_dom : target.options[:send_dom]
+    end
+    private :send_dom?
 
     def close_async
       close(false)
