@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe Applitools::Selenium::DomCapture do
   let(:driver) { instance_double(Applitools::Selenium::Driver) }
   let(:server_connector) { Applitools::Connectivity::ServerConnector.new }

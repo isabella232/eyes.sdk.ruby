@@ -49,7 +49,7 @@ module Applitools
         end
 
         def fetch_urls(nodes)
-          nodes.map { |n| url(n) }.flatten.compact #rescue []
+          nodes.map { |n| url(n) }.flatten.compact
         end
 
         def import_rules

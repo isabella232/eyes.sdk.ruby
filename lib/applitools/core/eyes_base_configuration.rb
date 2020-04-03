@@ -108,6 +108,7 @@ module Applitools
     object_field :default_match_settings, Applitools::ImageMatchSettings
     int_field :scale
     int_field :remainder
+    boolean_field :ignore_caret
 
     methods_to_delegate.delete(:batch_info)
     methods_to_delegate.delete(:batch_info=)
@@ -150,6 +151,14 @@ module Applitools
 
     def custom_getter_for_match_level(_value)
       default_match_settings.match_level
+    end
+
+    def custom_getter_for_ignore_caret(_value)
+      default_match_settings.ignore_caret
+    end
+
+    def custom_setter_for_ignore_caret(value)
+      default_match_settings.ignore_caret = value
     end
 
     methods_to_delegate.push(:set_proxy)

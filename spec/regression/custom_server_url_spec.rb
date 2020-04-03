@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rspec'
 require 'spec_helper'
 
@@ -21,4 +23,3 @@ RSpec.describe 'Server URL double slash' do
     subject.render('http://my.service.url', 'key', Applitools::Selenium::RenderRequests.new)
   end
 end
-

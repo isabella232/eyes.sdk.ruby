@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require_relative 'test_utils'
 
@@ -22,9 +23,13 @@ class ChildNode
     my_child_nodes = child_nodes
     other_child_nodes = other.child_nodes
     return result if child_nodes.nil? && other_child_nodes.nil?
-    raise ComparisonError, "#{tag}: child_nodes sizes are not equal" unless my_child_nodes.size == other_child_nodes.size
+    raise ComparisonError, "#{tag}: child_nodes sizes are not equal" unless
+        my_child_nodes.size == other_child_nodes.size
     child_nodes.each_with_index do |node, index|
-      result = false unless ChildNode.new(child_tag(node['tagName']), node) == ChildNode.new(child_tag(other_child_nodes[index]['tagName']), other_child_nodes[index])
+      result = false unless
+          ChildNode.new(child_tag(node['tagName']), node) == ChildNode.new(
+            child_tag(other_child_nodes[index]['tagName']), other_child_nodes[index]
+          )
       break unless result
     end
     result
@@ -72,23 +77,25 @@ RSpec.describe 'TestSendDom' do
     actual_app_outputs[0]['image']['hasDom']
   end
 
-  let(:capabilities) {
+  let(:capabilities) do
     {
       browser_name: 'chrome',
       browser_version: 'latest',
       platform_name: 'Windows 10',
-      "sauce:options" => {
-          record_video: false,
-          record_screenshots: false,
-          username: ENV['SAUCE_USERNAME'],
-          accesskey: ENV['SAUCE_ACCESSKEY'],
-          screen_resolution: '1280x800'
+      'sauce:options' => {
+        record_video: false,
+        record_screenshots: false,
+        username: ENV['SAUCE_USERNAME'],
+        accesskey: ENV['SAUCE_ACCESSKEY'],
+        screen_resolution: '1280x800'
       }
     }
-  }
+  end
   let(:caps) { Selenium::WebDriver::Remote::Capabilities.chrome.merge!(capabilities) }
 
-  let(:sauce_web_driver) { Selenium::WebDriver.for :remote, url: 'http://ondemand.saucelabs.com/wd/hub', desired_capabilities: capabilities }
+  let(:sauce_web_driver) do
+    Selenium::WebDriver.for :remote, url: 'http://ondemand.saucelabs.com/wd/hub', desired_capabilities: capabilities
+  end
   let(:local_web_driver) { Selenium::WebDriver.for :chrome }
   let(:web_driver) { ENV['SAUCE_USERNAME'] && ENV['SAUCE_ACCESSKEY'] ? sauce_web_driver : local_web_driver }
   let(:eyes_web_driver) do |example|
@@ -110,7 +117,7 @@ RSpec.describe 'TestSendDom' do
         actual_dom_json_string = Oj.load(eyes.dom_json)
         expected_dom_json = Oj.load(
           File.read(
-            File.join(File.dirname(__FILE__ ),'/../fixtures/expected_dom1.json')
+            File.join(File.dirname(__FILE__), '/../fixtures/expected_dom1.json')
           )
         )
         results = eyes.close(false)

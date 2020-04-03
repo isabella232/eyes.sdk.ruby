@@ -245,7 +245,6 @@ module Applitools::Selenium
       original_position_provider = position_provider
       original_force_full_page_screenshot = force_full_page_screenshot
 
-      eyes_element = nil
       timeout = target_to_check.options[:timeout] || USE_DEFAULT_MATCH_TIMEOUT
 
       self.eyes_screenshot_factory = lambda do |image|
@@ -257,6 +256,7 @@ module Applitools::Selenium
 
       self.prevent_dom_processing = send_dom?(target_to_check) ? false : true
 
+      # rubocop:disable BlockLength
       check_in_frame target_frames: target_to_check.frames do
         begin
           match_data = Applitools::MatchWindowData.new(default_match_settings)
@@ -310,13 +310,13 @@ module Applitools::Selenium
               rescue Applitools::EyesDriverOperationException => e
                 logger.warn "Failed to hide scrollbars! Error: #{e.message}"
               ensure
-                ensure_block = lambda {
+                ensure_block = lambda do
                   begin
                     Applitools::Utils::EyesSeleniumUtils.set_overflow driver, original_overflow if original_overflow
                   rescue Applitools::EyesDriverOperationException => e
                     logger.warn "Failed to revert overflow! Error: #{e.message}"
                   end
-                }
+                end
               end
             end
           end
@@ -325,7 +325,7 @@ module Applitools::Selenium
             region_provider, timeout, match_data
           )
         ensure
-          ensure_block.call
+          ensure_block.call if ensure_block
           self.check_frame_or_element = false
           self.force_full_page_screenshot = original_force_full_page_screenshot
           self.position_provider = original_position_provider

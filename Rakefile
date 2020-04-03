@@ -19,6 +19,12 @@ unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
     t.pattern = 'spec/integration/*_spec.rb'
     t.rspec_opts = '--tag selenium'
   end
+
+  RSpec::Core::RakeTask.new(:spec_vg) do |t|
+    t.pattern = 'spec/integration/*_spec.rb'
+    t.rspec_opts = '--tag visual_grid'
+  end
+
   task :set_batch_info do
     string = ENV['TRAVIS_COMMIT'] ? ENV['TRAVIS_COMMIT'] + ENV['TRAVIS_RUBY_VERSION'] : SecureRandom.hex
     batch_id = `(java UUIDFromString #{string})`

@@ -29,7 +29,6 @@ module Applitools
       def initialize
         self.frames = []
         self.options = {
-          ignore_caret: true,
           ignore_mismatch: false,
           script_hooks: { beforeCaptureScreenshot: '' }
         }

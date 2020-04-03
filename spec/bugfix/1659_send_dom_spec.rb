@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RSpec.describe 'Eyes send dom flag' do
   let(:send_dom_target) { Applitools::Selenium::Target.window.send_dom }
   let(:do_not_set_dom_target) { Applitools::Selenium::Target.window.send_dom(false) }
