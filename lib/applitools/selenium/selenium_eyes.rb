@@ -117,7 +117,6 @@ module Applitools::Selenium
       self.region_to_check = nil
       self.force_full_page_screenshot = false
       self.dont_get_title = false
-      self.hide_scrollbars = false
       self.device_pixel_ratio = UNKNOWN_DEVICE_PIXEL_RATIO
       self.stitch_mode = Applitools::STITCH_MODE[:scroll]
       self.wait_before_screenshots = DEFAULT_WAIT_BEFORE_SCREENSHOTS
@@ -256,12 +255,6 @@ module Applitools::Selenium
         )
       end
 
-      # self.prevent_dom_processing = !((!target.options[:send_dom].nil? && target.options[:send_dom]) ||
-      #     send_dom || stitch_mode == Applitools::STITCH_MODE[:css])
-      #
-      # require 'pry'
-      # binding.pry
-
       self.prevent_dom_processing = send_dom?(target_to_check) ? false : true
 
       check_in_frame target_frames: target_to_check.frames do
@@ -307,6 +300,24 @@ module Applitools::Selenium
                 driver,
                 eyes_element
               )
+              ensure_block = -> { eyes_element.overflow = original_overflow if original_overflow }
+            end
+          else
+            if hide_scrollbars
+              begin
+                original_overflow = Applitools::Utils::EyesSeleniumUtils.hide_scrollbars driver
+                driver.find_element(:css, 'html').overflow_data_attribute = original_overflow
+              rescue Applitools::EyesDriverOperationException => e
+                logger.warn "Failed to hide scrollbars! Error: #{e.message}"
+              ensure
+                ensure_block = lambda {
+                  begin
+                    Applitools::Utils::EyesSeleniumUtils.set_overflow driver, original_overflow if original_overflow
+                  rescue Applitools::EyesDriverOperationException => e
+                    logger.warn "Failed to revert overflow! Error: #{e.message}"
+                  end
+                }
+              end
             end
           end
 
@@ -314,7 +325,7 @@ module Applitools::Selenium
             region_provider, timeout, match_data
           )
         ensure
-          eyes_element.overflow = original_overflow unless original_overflow.nil?
+          ensure_block.call
           self.check_frame_or_element = false
           self.force_full_page_screenshot = original_force_full_page_screenshot
           self.position_provider = original_position_provider
@@ -417,33 +428,16 @@ module Applitools::Selenium
 
       update_scaling_params
 
-      if hide_scrollbars
-        begin
-          original_overflow = Applitools::Utils::EyesSeleniumUtils.hide_scrollbars driver
-          driver.find_element(:css, 'html').overflow_data_attribute = original_overflow
-        rescue Applitools::EyesDriverOperationException => e
-          logger.warn "Failed to hide scrollbars! Error: #{e.message}"
-        end
-      end
-
-      begin
-        algo = Applitools::Selenium::FullPageCaptureAlgorithm.new(
-          debug_screenshot_provider: debug_screenshot_provider
-        )
-        case screenshot_type
-        when ENTIRE_ELEMENT_SCREENSHOT
-          self.screenshot = entire_element_screenshot(algo)
-        when FULLPAGE_SCREENSHOT
-          self.screenshot = full_page_screenshot(algo)
-        when VIEWPORT_SCREENSHOT
-          self.screenshot = viewport_screenshot
-        end
-      ensure
-        begin
-          Applitools::Utils::EyesSeleniumUtils.set_overflow driver, original_overflow
-        rescue Applitools::EyesDriverOperationException => e
-          logger.warn "Failed to revert overflow! Error: #{e.message}"
-        end
+      algo = Applitools::Selenium::FullPageCaptureAlgorithm.new(
+        debug_screenshot_provider: debug_screenshot_provider
+      )
+      case screenshot_type
+      when ENTIRE_ELEMENT_SCREENSHOT
+        self.screenshot = entire_element_screenshot(algo)
+      when FULLPAGE_SCREENSHOT
+        self.screenshot = full_page_screenshot(algo)
+      when VIEWPORT_SCREENSHOT
+        self.screenshot = viewport_screenshot
       end
     end
 
@@ -465,7 +459,6 @@ module Applitools::Selenium
         stitching_overlap: stitching_overlap
       )
 
-      # binding.pry
       unless original_frame.empty?
         logger.info 'Switching back to original frame...'
         driver.switch_to.frames frame_chain: original_frame

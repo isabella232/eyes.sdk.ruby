@@ -11,7 +11,7 @@ module Applitools
           force_full_page_screenshot: false,
           wait_before_screenshots: 0.1,
           stitch_mode: Applitools::Selenium::StitchModes::CSS,
-          hide_scrollbars: false,
+          hide_scrollbars: true,
           hide_caret: false,
           browsers_info: Applitools::Selenium::BrowsersInfo.new,
           accessibility_validation: Applitools::AccessibilityLevel::NONE,
