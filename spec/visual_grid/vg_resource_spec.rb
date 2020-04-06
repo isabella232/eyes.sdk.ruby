@@ -37,6 +37,22 @@ RSpec.describe 'vg_resource' do
     end.to_not raise_error
   end
 
+  it 'spec/fixtures/carat-u-blue.svg' do
+    block = proc do |l, u|
+      expect(l).to be_a(Array)
+      expect(u).to be_a(URI)
+      expect(l).to_not include('#path-1')
+    end
+    expect do
+      Applitools::Selenium::VGResource.new(
+        'https://applitools.com',
+        'image/svg+xml',
+        content,
+        on_resources_fetched: block
+      )
+    end.to_not raise_error
+  end
+
   it 'spec/fixtures/fa-regular-400.svg' do
     block = proc do |l, u|
       expect(l).to be_a(Array)

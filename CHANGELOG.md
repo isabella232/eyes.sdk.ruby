@@ -1,6 +1,7 @@
 ## Fixed
 - eyes#hide_scrollbars is true by default [Trello 1592](https://trello.com/c/MXixwLnj/1592-upload-dom-directly-to-azure)
 - eyes#ignore_caret has been included tothe configuration object [Trello)_1706](https://trello.com/c/16JqYlYb/1706-ignorecaret-globally-is-missing-ruby)
+- Irrelevant URLs are excluded from SVG resource parsing results [Trello 1691](https://trello.com/c/EAIpEh8s/1691-ruby-vg-parsing-of-irrelevant-urls-from-css-and-svg-resources)
 ## Added
 -  x-applitools-eyes-client header for all API requests [Trello_1697](https://trello.com/c/CzhUxOqE/1697-all-sdks-should-report-their-version-in-all-requests-to-the-eyes-server) 
 ## [Eyes.sdk.ruby 3.16.12] - 2020-03-30
