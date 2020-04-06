@@ -43,10 +43,21 @@ module Applitools::Connectivity
     attr_accessor :server_url
     attr_reader :endpoint_url
     attr_reader :proxy
+    attr_reader :agent_id_proc
     environment_attribute :api_key, 'APPLITOOLS_API_KEY'
 
     def initialize(url = nil)
       self.server_url = url
+    end
+
+    def obtain_agent_id(&block)
+      @agent_id_proc = block if block_given?
+    end
+
+    def agent_id
+      return agent_id_proc.call if agent_id_proc
+      Applitools::EyesLogger.error('The agent id is not set!')
+      "eyes.sdk.ruby/#{Applitools::VERSION}"
     end
 
     def rendering_info
@@ -159,7 +170,7 @@ module Applitools::Connectivity
     def download_resource(url, ua_string = nil)
       Applitools::EyesLogger.debug "Fetching #{url}..."
       resp_proc = proc do |u|
-        faraday_connection(u).send(:get) do |req|
+        faraday_connection(u, false).send(:get) do |req|
           req.options.timeout = self.class.connection_timeout || DEFAULT_TIMEOUT
           req.headers[:accept_encoding] = 'identity'
           req.headers[:accept_language] = '*'
@@ -300,12 +311,19 @@ module Applitools::Connectivity
 
     private
 
-    def faraday_connection(url)
+    def faraday_connection(url, pass_user_agent_header = true)
       Faraday.new(
         url: url,
         ssl: { ca_file: SSL_CERT },
         proxy: @proxy.nil? ? nil : @proxy.to_hash
       ) do |faraday|
+        if pass_user_agent_header
+          faraday.use(
+            Applitools::Connectivity::UserAgentMiddleware,
+            get_user_agent: @agent_id_proc,
+            get_server_url: proc { server_url }
+          )
+        end
         faraday.use FaradayMiddleware::FollowRedirects
         faraday.use :cookie_jar
         faraday.adapter self.class.faraday_adapter

@@ -66,6 +66,9 @@ module Applitools
       self.runner = options[:runner]
       server_url = args.first
       @server_connector = Applitools::Connectivity::ServerConnector.new(server_url)
+      @server_connector.obtain_agent_id do
+        full_agent_id
+      end
       ensure_config
       self.server_url = server_url if server_url
       self.disabled = false

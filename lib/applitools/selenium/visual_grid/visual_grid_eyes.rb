@@ -29,6 +29,9 @@ module Applitools
       def initialize(visual_grid_manager, server_url = nil)
         ensure_config
         @server_connector = Applitools::Connectivity::ServerConnector.new(server_url)
+        @server_connector.obtain_agent_id do
+          full_agent_id
+        end
         self.server_url = server_url if server_url
         self.visual_grid_manager = visual_grid_manager
         self.test_list = Applitools::Selenium::TestList.new
@@ -39,6 +42,10 @@ module Applitools
 
       def ensure_config
         self.config = Applitools::Selenium::Configuration.new
+      end
+
+      def full_agent_id
+        "eyes.selenium.visualgrid.ruby/#{Applitools::VERSION}"
       end
 
       def configure
