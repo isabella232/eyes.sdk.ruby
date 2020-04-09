@@ -4,7 +4,7 @@ RSpec.shared_context 'selenium workaround' do
   before(:all) do
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
-    Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
+    # Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
     @runner = if self.class.metadata[:visual_grid]
                 $vg_runner ||= Applitools::Selenium::VisualGridRunner.new(10)
               else
