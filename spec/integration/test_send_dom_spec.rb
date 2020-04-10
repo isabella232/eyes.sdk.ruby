@@ -3,7 +3,7 @@
 require 'spec_helper'
 require_relative 'test_utils'
 
-Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
+# Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
 
 class ChildNode
   class ComparisonError < StandardError; end

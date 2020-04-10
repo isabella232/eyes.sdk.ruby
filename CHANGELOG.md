@@ -1,3 +1,7 @@
+## [Eyes.sdk.ruby 3.16.14] - 2020-04-10
+## Added
+-  new_session? flag is taken from start_session server response with fallback to the status code [Trello_1715](https://trello.com/c/DcVzWbeR/1715-all-sdks-updated-long-running-task-mode-for-startsession) 
+## [Eyes.sdk.ruby 3.16.13] - 2020-04-06
 ## Fixed
 - eyes#hide_scrollbars is true by default [Trello 1592](https://trello.com/c/MXixwLnj/1592-upload-dom-directly-to-azure)
 - eyes#ignore_caret has been included tothe configuration object [Trello)_1706](https://trello.com/c/16JqYlYb/1706-ignorecaret-globally-is-missing-ruby)

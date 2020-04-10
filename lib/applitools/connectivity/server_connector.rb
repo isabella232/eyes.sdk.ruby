@@ -288,7 +288,7 @@ module Applitools::Connectivity
       raise Applitools::EyesError.new("Request failed: #{res.status} #{res.body} #{request_body}") unless res.success?
 
       response = Oj.load(res.body)
-      Applitools::Session.new(response['id'], response['url'], res.status == HTTP_STATUS_CODES[:created])
+      Applitools::Session.new(response, res.status == HTTP_STATUS_CODES[:created])
     end
 
     def stop_session(session, aborted = nil, save = false)
