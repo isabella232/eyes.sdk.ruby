@@ -674,10 +674,13 @@ module Applitools::Selenium
 
         if platform_name && !platform_name.empty?
           os = platform_name
-          platform_version = Applitools::Utils::EyesSeleniumUtils.platform_version(underlying_driver).to_s
-          unless platform_version.empty?
+          platform_version = Applitools::Utils::EyesSeleniumUtils.platform_version(underlying_driver)
+          case platform_version
+          when String
             major_version = platform_version.split(/\./).first
             os << " #{major_version}"
+          when Array
+            os << " #{platform_version.first}"
           end
           logger.info "Setting OS: #{os}"
           app_env.os = os

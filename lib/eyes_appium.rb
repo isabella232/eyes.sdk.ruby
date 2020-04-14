@@ -22,9 +22,13 @@ else
 end
 
 if defined? Appium::Driver
-  Appium::Driver.class_eval do
+  Appium::Core::Base::Driver.class_eval do
     def driver_for_eyes(eyes)
-      Applitools::Appium::Driver.new(eyes, driver: driver || start_driver, is_mobile_device: true, appium_driver: self)
+      if defined? Appium
+        Appium.promote_appium_methods Applitools::Appium::Driver::AppiumLib
+      end
+      Applitools::Appium::Driver.new(eyes, driver: self, is_mobile_device: true)
     end
   end
 end
+

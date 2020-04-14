@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.16.16] - 2020-04-28
+## Added
+- Regions support for eyes_appium (Target#ignore, Target#floating, Target#accessibility, Target#layout, etc.)
 ## [Eyes.sdk.ruby 3.16.15] - 2020-04-24
 ## Deprecated
 - BrowserTypes::EDGE is deprecated. Please change it to either "EDGE_LEGACY" for the legacy version or to "EDGE_CHROMIUM" for the new Chromium-based version. [Trello 1757](https://trello.com/c/LUe43aee/1757-all-ultrafast-sdks-edge-chromium-support)

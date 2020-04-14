@@ -1,6 +1,7 @@
 # frozen_string_literal: false
 
 class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
+  attr_accessor :status_bar_height
   def perform_driver_settings_for_appium_driver
     self.region_visibility_strategy = Applitools::Selenium::NopRegionVisibilityStrategy.new
     self.force_driver_resolution_as_viewport_size = true
@@ -11,6 +12,7 @@ class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
     self.dont_get_title = true
     self.runner = Applitools::ClassicRunner.new
     self.base_agent_id = "eyes.appium.ruby/#{Applitools::VERSION}".freeze
+    self.status_bar_height = 0
   end
 
   private :perform_driver_settings_for_appium_driver
@@ -76,7 +78,7 @@ class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
     result = super do |screenshot|
       if scale_provider
         scaled_image = scale_provider.scale_image(screenshot.image)
-        self.screenshot = Applitools::Appium::Screenshot.new(
+        self.screenshot = screenshot_class.new(
           Applitools::Screenshot.from_image(
             case scaled_image
             when ChunkyPNG::Image
@@ -86,7 +88,9 @@ class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
             else
               raise Applitools::EyesError.new('Unknown image format after scale!')
             end
-          )
+          ),
+          status_bar_height: Applitools::Utils::EyesSeleniumUtils.status_bar_height(driver),
+          device_pixel_ratio: Applitools::Utils::EyesSeleniumUtils.device_pixel_ratio(driver)
         )
       end
     end
@@ -115,17 +119,22 @@ class Applitools::Appium::Eyes < Applitools::Selenium::SeleniumEyes
 
   def viewport_screenshot
     logger.info 'Viewport screenshot requested...'
-    self.screenshot = Applitools::Appium::Screenshot.new(
+
+    self.screenshot = screenshot_class.new(
       Applitools::Screenshot.from_datastream(driver.screenshot_as(:png))
     )
   end
 
   def element_screenshot
     logger.info 'Element screenshot requested...'
-    self.screenshot = Applitools::Appium::Screenshot.new(
-      Applitools::Screenshot.from_datastream(
-        driver.element_screenshot_as(eyes_element_to_check, :png)
-      )
+    self.screenshot = screenshot_class.new(
+      Applitools::Screenshot.from_datastream(driver.element_screenshot_as(eyes_element_to_check, :png))
     )
+  end
+
+  def screenshot_class
+    return Applitools::Appium::IosScreenshot if Applitools::Utils::EyesSeleniumUtils.ios?(Applitools::Appium::Driver::AppiumLib)
+    return Applitools::Appium::AndroidScreenshot if Applitools::Utils::EyesSeleniumUtils.android?(Applitools::Appium::Driver::AppiumLib)
+    raise Applitools::EyesError, 'Unknown device type'
   end
 end

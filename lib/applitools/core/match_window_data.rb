@@ -4,6 +4,7 @@ module Applitools
   class MatchWindowData
     class << self
       def convert_coordinates(region, screenshot)
+        return region.with_padding.to_hash if region.respond_to?(:converted?) && region.converted?
         screenshot.convert_region_location(
           region.with_padding,
           Applitools::EyesScreenshot::COORDINATE_TYPES[:context_relative],
