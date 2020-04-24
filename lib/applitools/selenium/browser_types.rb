@@ -13,9 +13,29 @@ module BrowserTypes
   SAFARI_ONE_VERSION_BACK = :'safari-1'
   SAFARI_TWO_VERSIONS_BACK = :'safari-2'
 
+  EDGE_CHROMIUM = :'edgechromium'
+  EDGE_CHROMIUM_ONE_VERSION_BACK = :'edgechromium-1'
+
   IE_11 = :ie
-  EDGE = :edge
+  EDGE_LEGACY = :edgelegacy
   IE_10 = :ie10
+
+  def const_defined?(name)
+    return true if name == :EDGE
+    super
+  end
+
+  def const_missing(name)
+    if name == :EDGE
+      Applitools::EyesLogger.warn(
+        'The \'EDGE\' option that is being used in your browsers\' configuration will soon be deprecated. ' \
+        'Please change it to either \'EDGE_LEGACY\' for the legacy version ' \
+        'or to \'EDGE_CHROMIUM\' for the new Chromium-based version.'
+      )
+      return EDGE_LEGACY
+    end
+    super
+  end
 
   def enum_values
     [
@@ -29,8 +49,10 @@ module BrowserTypes
       SAFARI_ONE_VERSION_BACK,
       SAFARI_TWO_VERSIONS_BACK,
       IE_11,
-      EDGE,
-      IE_10
+      EDGE_LEGACY,
+      IE_10,
+      EDGE_CHROMIUM,
+      EDGE_CHROMIUM_ONE_VERSION_BACK
     ]
   end
 end

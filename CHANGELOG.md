@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.16.15] - 2020-04-24
+## Deprecated
+- BrowserTypes::EDGE is deprecated. Please change it to either "EDGE_LEGACY" for the legacy version or to "EDGE_CHROMIUM" for the new Chromium-based version. [Trello 1757](https://trello.com/c/LUe43aee/1757-all-ultrafast-sdks-edge-chromium-support)
 ## [Eyes.sdk.ruby 3.16.14] - 2020-04-10
 ## Added
 -  new_session? flag is taken from start_session server response with fallback to the status code [Trello_1715](https://trello.com/c/DcVzWbeR/1715-all-sdks-updated-long-running-task-mode-for-startsession) 
