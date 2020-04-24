@@ -27,7 +27,7 @@ module Applitools
 
       def platform
         case browser_type
-        when BrowserTypes::EDGE
+        when BrowserTypes::EDGE_LEGACY, BrowserTypes::EDGE_CHROMIUM, BrowserTypes::EDGE_CHROMIUM_ONE_VERSION_BACK
           'windows'
         else
           'linux'
