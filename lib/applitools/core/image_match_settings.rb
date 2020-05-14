@@ -6,12 +6,12 @@ module Applitools
   class ImageMatchSettings
     include Applitools::Jsonable
     include Applitools::MatchLevelSetter
-    json_fields :accessibilityLevel, :MatchLevel, :IgnoreCaret, :IgnoreDisplacements, :Accessibility,
+    json_fields :accessibilitySettings, :MatchLevel, :IgnoreCaret, :IgnoreDisplacements, :Accessibility,
       :Ignore, :Floating, :Layout, :Strict, :Content, :Exact, :EnablePatterns, :UseDom,
       :SplitTopHeight, :SplitBottomHeight, :scale, :remainder
 
     def initialize
-      self.accessibility_level = 'None'
+      self.accessibility_settings = nil
       self.match_level = Applitools::MatchLevel::STRICT
       self.split_top_height = 0
       self.split_bottom_height = 0
@@ -47,6 +47,15 @@ module Applitools
         cloned_value.send("#{f}=", new_value)
       end
       cloned_value
+    end
+
+    def accessibility_validation
+      accessibility_settings
+    end
+
+    def accessibility_validation=(value)
+      raise Applitools::EyesIllegalArgument, "Expected value to be an Applitools::AccessibilitySettings instance but got #{value.class}" unless value.nil? || value.is_a?(Applitools::AccessibilitySettings)
+      self.accessibility_settings = value
     end
 
     class Exact

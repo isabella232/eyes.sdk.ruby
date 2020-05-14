@@ -14,7 +14,6 @@ module Applitools
           hide_scrollbars: true,
           hide_caret: false,
           browsers_info: Applitools::Selenium::BrowsersInfo.new,
-          accessibility_validation: Applitools::AccessibilityLevel::NONE,
           rendering_grid_force_put: (ENV['APPLITOOLS_RENDERING_GRID_FORCE_PUT'] || 'false').casecmp('true') == 0
         }
       end
@@ -33,13 +32,7 @@ module Applitools
 
       object_field :browsers_info, Applitools::Selenium::BrowsersInfo
       int_field :concurrent_sessions
-      enum_field :accessibility_validation, Applitools::AccessibilityLevel.enum_values
       boolean_field :rendering_grid_force_put
-
-      def custom_setter_for_accessibility_validation(value)
-        # self.default_match_settings = self.parent.class.default_config[:default_match_settings] unless default_match_settings
-        default_match_settings.accessibility_level = value
-      end
 
       def add_browser(*args)
         case args.size

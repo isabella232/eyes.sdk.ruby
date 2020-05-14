@@ -1,3 +1,7 @@
+## Added
+- eyes.accessibility_validation(Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityVersion::WCAG_2_0)) - [Trello_1767](https://trello.com/c/gq69woeK/1767-all-sdks-accessibility-accessiblity-guidelines-version-support-and-additional-verifications?menu=filter&filter=due:notdue)
+## Removed
+- eyes.accessibility_level
 ## [Eyes.sdk.ruby 3.16.16] - 2020-04-28
 ## Added
 - Regions support for eyes_appium (Target#ignore, Target#floating, Target#accessibility, Target#layout, etc.)

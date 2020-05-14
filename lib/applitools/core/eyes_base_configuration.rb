@@ -20,7 +20,8 @@ module Applitools
         ENV['bamboo_APPLITOOLS_SERVER_URL'] || Applitools::Connectivity::ServerConnector::DEFAULT_SERVER_URL,
       api_key: ENV['APPLITOOLS_API_KEY'] || ENV['bamboo_APPLITOOLS_API_KEY'] || '',
       save_new_tests: true,
-      default_match_settings: Applitools::ImageMatchSettings.new
+      default_match_settings: Applitools::ImageMatchSettings.new,
+      accessibility_validation: nil
     }.freeze
 
     class << self
@@ -109,6 +110,7 @@ module Applitools
     int_field :scale
     int_field :remainder
     boolean_field :ignore_caret
+    object_field :accessibility_validation, Applitools::AccessibilitySettings, true
 
     methods_to_delegate.delete(:batch_info)
     methods_to_delegate.delete(:batch_info=)
@@ -160,6 +162,12 @@ module Applitools
     def custom_setter_for_ignore_caret(value)
       default_match_settings.ignore_caret = value
     end
+
+    def custom_setter_for_accessibility_validation(value)
+      # self.default_match_settings = self.parent.class.default_config[:default_match_settings] unless default_match_settings
+      default_match_settings.accessibility_validation = value
+    end
+
 
     methods_to_delegate.push(:set_proxy)
   end

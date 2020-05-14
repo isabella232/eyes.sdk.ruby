@@ -4,6 +4,18 @@ require 'yaml'
 
 module Applitools
   class TestResults
+    class AccessibilityStatus
+      attr_accessor :status, :level, :version
+      def initialize(hash)
+        self.status = hash['status']
+        self.level = hash['level']
+        self.version = hash['version']
+      end
+
+      def failed?
+        status.downcase == 'Failed'.downcase
+      end
+    end
     attr_accessor :is_new, :url, :screenshot
     attr_reader :status, :steps, :matches, :mismatches, :missing, :original_results
 
@@ -48,6 +60,10 @@ module Applitools
 
     def secret_token
       original_results['secretToken']
+    end
+
+    def session_accessibility_status
+      @accessibility_status ||= AccessibilityStatus.new(original_results['accessibilityStatus'])
     end
 
     def ==(other)

@@ -4,7 +4,6 @@ module Applitools
   module AccessibilityRegionType
     extend self
 
-    NONE = 'None'
     IGNORE_CONTRAST = 'IgnoreContrast'
     REGULAR_TEXT = 'RegularText'
     LARGE_TEXT = 'LargeText'
@@ -13,7 +12,6 @@ module Applitools
 
     def enum_values
       [
-        NONE,
         IGNORE_CONTRAST,
         REGULAR_TEXT,
         LARGE_TEXT,

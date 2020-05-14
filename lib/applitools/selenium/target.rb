@@ -312,7 +312,7 @@ module Applitools
         options = Applitools::Utils.extract_options! args
         unless options[:type]
           raise Applitools::EyesError,
-            'You should call Target.accessibility(region, region_type: type). The region_type option is required'
+            'You should call Target.accessibility(region, type: type). The :type option is required'
         end
         unless Applitools::AccessibilityRegionType.enum_values.include?(options[:type])
           raise Applitools::EyesIllegalArgument,

@@ -62,7 +62,7 @@ module Applitools
       end
     end
 
-    def object_field(field_name, klass)
+    def object_field(field_name, klass, allow_nil = false)
       collect_method field_name
       define_method(field_name) do
         return send("custom_getter_for_#{field_name}", config_hash[field_name.to_sym]) if
@@ -71,11 +71,11 @@ module Applitools
       end
       define_method("#{field_name}=") do |*args|
         value = args.shift
-        unless value.is_a? klass
+        unless value.is_a?(klass)
           raise(
             Applitools::EyesIllegalArgument,
             "Expected #{klass} but got #{value.class}"
-          )
+          ) unless allow_nil && value.nil?
         end
         config_hash[field_name.to_sym] = value
         config_hash[field_name.to_sym] = send("custom_setter_for_#{field_name}", config_hash[field_name.to_sym]) if
@@ -123,7 +123,7 @@ module Applitools
         unless available_values_array.include? value
           raise(
             Applitools::EyesIllegalArgument,
-            "Unknown #{field_name} #{value}. Allowed session types: " \
+            "Unknown #{field_name} #{value}. Allowed #{field_name} values: " \
            "#{available_values_array.join(', ')}"
           )
         end
