@@ -11,7 +11,7 @@ module Applitools
     end
   end
 
-  module AccessibilityVersion
+  module AccessibilityGuidelinesVersion
     extend self
     WCAG_2_1 = 'WCAG_2_1'
     WCAG_2_0 = 'WCAG_2_0'
@@ -26,7 +26,7 @@ module Applitools
     extend Applitools::EyesConfigurationDSL
 
     enum_field :level, Applitools::AccessibilityLevel.enum_values
-    enum_field :version, Applitools::AccessibilityVersion.enum_values
+    enum_field :version, Applitools::AccessibilityGuidelinesVersion.enum_values
 
     def initialize(accessibility_level, guidelines_version)
       @config_hash = {}

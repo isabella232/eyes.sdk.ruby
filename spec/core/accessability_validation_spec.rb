@@ -4,7 +4,7 @@ RSpec.describe 'AccessibilityValidation' do
     let(:valid) do
       Applitools::AccessibilitySettings.new(
         Applitools::AccessibilityLevel::AA,
-        Applitools::AccessibilityVersion::WCAG_2_0
+        Applitools::AccessibilityGuidelinesVersion::WCAG_2_0
       )
     end
 
@@ -38,7 +38,7 @@ RSpec.describe 'AccessibilityValidation' do
   end
   context 'ImageMatchSettings' do
     subject { Applitools::ImageMatchSettings.new }
-    let(:as) { Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityVersion::WCAG_2_0) }
+    let(:as) { Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0) }
     it 'accepts nil value for :accessibility_validation=' do
       expect { subject.accessibility_validation = nil }.to_not raise_error
     end
@@ -71,7 +71,7 @@ RSpec.describe 'AccessibilityValidation' do
       end
       it 'sets :accessibility_settings' do
         expect(config.default_match_settings.accessibility_settings).to be nil
-        ac = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AAA, Applitools::AccessibilityVersion::WCAG_2_0)
+        ac = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AAA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0)
         config.accessibility_validation = ac
         expect(config.default_match_settings.accessibility_settings).to be_a(Applitools::AccessibilitySettings)
         expect(config.default_match_settings.accessibility_settings.level).to eq ac.level
@@ -92,7 +92,7 @@ RSpec.describe 'AccessibilityValidation' do
       result = Applitools::Selenium::Eyes.new
       result.configure do |c|
         c.server_url = 'https://testeyesapi.applitools.com'
-        c.accessibility_validation = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityVersion::WCAG_2_0)
+        c.accessibility_validation = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0)
         c.set_proxy('http://localhost:8000')
         c.match_level = Applitools::MatchLevel::STRICT
       end
