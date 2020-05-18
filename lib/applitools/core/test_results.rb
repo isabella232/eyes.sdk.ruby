@@ -6,7 +6,7 @@ module Applitools
   class TestResults
     class AccessibilityStatus
       attr_accessor :status, :level, :version
-      def initialize(hash)
+      def initialize(hash = {})
         self.status = hash['status']
         self.level = hash['level']
         self.version = hash['version']
@@ -62,8 +62,12 @@ module Applitools
       original_results['secretToken']
     end
 
+    def name
+      original_results['name']
+    end
+
     def session_accessibility_status
-      @accessibility_status ||= AccessibilityStatus.new(original_results['accessibilityStatus'])
+      @accessibility_status ||= original_results['accessibilityStatus'] && AccessibilityStatus.new(original_results['accessibilityStatus'] || {})
     end
 
     def ==(other)

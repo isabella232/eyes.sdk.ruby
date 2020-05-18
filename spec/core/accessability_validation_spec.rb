@@ -87,100 +87,199 @@ RSpec.describe 'AccessibilityValidation' do
       it_behaves_like 'has_accessibility_settings'
     end
   end
+  # context 'integration' do
+  #   let(:eyes) do
+  #     result = Applitools::Selenium::Eyes.new
+  #     result.configure do |c|
+  #       c.server_url = 'https://testeyesapi.applitools.com'
+  #       c.accessibility_validation = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0)
+  #       c.set_proxy('http://localhost:8000')
+  #       c.match_level = Applitools::MatchLevel::STRICT
+  #     end
+  #     result
+  #   end
+  #   let(:web_driver) { Selenium::WebDriver.for :chrome }
+  #   let(:driver) do
+  #     eyes.open(
+  #       app_name: 'SessionStartInfo',
+  #       test_name: 'classic',
+  #       viewport_size: { width: 800, height: 600 },
+  #       driver: web_driver
+  #     )
+  #   end
+  #
+  #   let(:driver1) do
+  #     eyes.open(
+  #         app_name: 'SessionStartInfo',
+  #         test_name: 'classic',
+  #         viewport_size: { width: 800, height: 600 },
+  #         driver: web_driver
+  #     )
+  #   end
+  #
+  #   let(:driver2) do
+  #     eyes.open(
+  #         app_name: 'SessionStartInfo',
+  #         test_name: 'Accessibility regions',
+  #         viewport_size: { width: 800, height: 600 },
+  #         driver: web_driver
+  #     )
+  #   end
+  #
+  #   def eyes_test_result()
+  #     @eyes_test_result
+  #   end
+  #
+  #   def session_results()
+  #     Oj.load(Net::HTTP.get(session_results_url))
+  #   end
+  #
+  #   def session_query_params
+  #     URI.encode_www_form('AccessToken' => eyes_test_result.secret_token, 'apiKey' => eyes.api_key, 'format' => 'json')
+  #   end
+  #
+  #   def session_results_url
+  #     url = URI.parse(eyes_test_result.api_session_url)
+  #     url.query = session_query_params
+  #     url
+  #   end
+  #
+  #   it 'check' do
+  #     driver.get('https://applitools.com/helloworld')
+  #     eyes.check('Blah', Applitools::Selenium::Target.window())
+  #     @eyes_test_result = eyes.close
+  #     expect(@eyes_test_result.passed?).to be_truthy
+  #     expect(session_results['startInfo']['defaultMatchSettings']['accessibilitySettings']).to eq({'level' => 'AA', 'version' => 'WCAG_2_0'})
+  #
+  #     eyes.configure do |c|
+  #       c.accessibility_validation = nil
+  #     end
+  #
+  #     driver1.get('https://applitools.com/helloworld')
+  #     eyes.check('Blah', Applitools::Selenium::Target.window())
+  #     @eyes_test_result = eyes.close
+  #     expect(@eyes_test_result.passed?).to be_truthy
+  #     expect(session_results['startInfo']['defaultMatchSettings']['accessibilitySettings']).to be nil
+  #
+  #     driver.quit
+  #   end
+  #
+  #   it 'check regions' do
+  #     driver2.get('https://demo.applitools.com/')
+  #     eyes.check(
+  #       'Accessibility regions',
+  #       Applitools::Selenium::Target.window
+  #           .accessibility(:css, 'input', type: Applitools::AccessibilityRegionType::IGNORE_CONTRAST)
+  #           # .accessibility(:css, 'input#password', type: Applitools::AccessibilityRegionType::IGNORE_CONTRAST)
+  #     )
+  #     @eyes_test_result = eyes.close(false)
+  #     local_session_results = session_results
+  #     expect(local_session_results['actualAppOutput'][0]['imageMatchSettings']['accessibility']).to(
+  #       include({'type'=>'IgnoreContrast', 'isDisabled'=>false, 'left'=>255, 'top'=>347, 'width'=>290, 'height'=>37})
+  #     )
+  #     expect(local_session_results['actualAppOutput'][0]['imageMatchSettings']['accessibility']).to(
+  #         include({'type'=>'IgnoreContrast', 'isDisabled'=>false, 'left'=>255, 'top'=>425, 'width'=>290, 'height'=>37})
+  #     )
+  #     driver.quit
+  #   end
+  # end
   context 'integration' do
+    let(:driver) { Selenium::WebDriver.for :chrome }
     let(:eyes) do
-      result = Applitools::Selenium::Eyes.new
-      result.configure do |c|
-        c.server_url = 'https://testeyesapi.applitools.com'
-        c.accessibility_validation = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0)
-        c.set_proxy('http://localhost:8000')
-        c.match_level = Applitools::MatchLevel::STRICT
+      eyes = Applitools::Selenium::Eyes.new(runner: runner)
+      eyes.configure do |config|
+        config.server_url = 'https://testeyesapi.applitools.com'
+        config.set_proxy('http://localhost:8000')
+        config.accessibility_validation = Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0)
       end
-      result
+      eyes
     end
-    let(:web_driver) { Selenium::WebDriver.for :chrome }
-    let(:driver) do
-      eyes.open(
-        app_name: 'SessionStartInfo',
-        test_name: 'classic',
-        viewport_size: { width: 800, height: 600 },
-        driver: web_driver
-      )
-    end
+    shared_examples 'accessibility settings' do
+      it 'test' do
+        begin
+          driver.get('https://applitools.github.io/demo/TestPages/FramesTestPage/')
+          eyes.open(
+              app_name: 'Applitools Eyes SDK',
+              test_name: 'TestAccessibility_Sanity' + suffix,
+              viewport_size: { width: 700, height: 460 },
+              driver: driver
+          )
+          eyes.check(
+              'Sanity',
+              Applitools::Selenium::Target.window.accessibility(
+                  :class_name,
+                  'ignore',
+                  type: Applitools::AccessibilityRegionType::LARGE_TEXT
+              )
+          )
+          eyes.close_async
+          eyes.configure do |config|
+            config.accessibility_validation = nil
+            config.test_name = 'TestAccessibility_No_Accessibility' + suffix
+          end
+          eyes.open(
+              app_name: 'Applitools Eyes SDK',
+              test_name: 'TestAccessibility_No_Accessibility' + suffix,
+              viewport_size: {width: 1200, height: 600},
+              driver: driver
+          )
+          eyes.check_window('No accessibility')
+          eyes.close_async
+        ensure
+          driver.quit
+          eyes.abort_async
+          all_test_results = runner.get_all_test_results(false)
+          expect(all_test_results.length).to eq 2
+          resultSanity = all_test_results[0]
+          resultNoAccessibility = all_test_results[1]
 
-    let(:driver1) do
-      eyes.open(
-          app_name: 'SessionStartInfo',
-          test_name: 'classic',
-          viewport_size: { width: 800, height: 600 },
-          driver: web_driver
-      )
-    end
+          if (resultNoAccessibility.name =~ /^TestAccessibility_Sanity/)
+            temp = resultNoAccessibility
+            resultNoAccessibility = resultSanity
+            resultSanity = temp
+          end
 
-    let(:driver2) do
-      eyes.open(
-          app_name: 'SessionStartInfo',
-          test_name: 'Accessibility regions',
-          viewport_size: { width: 800, height: 600 },
-          driver: web_driver
-      )
-    end
+          accessibility_status = resultSanity.session_accessibility_status
+          expect(accessibility_status.level).to eq('AA')
+          expect(accessibility_status.version).to eq('WCAG_2_0')
+          expect(resultNoAccessibility.session_accessibility_status).to be nil
 
-    def eyes_test_result()
-      @eyes_test_result
-    end
+          session_results = session_results(eyes.api_key, resultSanity)
+          default_match_settings = session_results['startInfo']['defaultMatchSettings']
+          expect(default_match_settings['accessibilitySettings']).to eq({'level' => 'AA', 'version' => 'WCAG_2_0'})
 
-    def session_results()
-      Oj.load(Net::HTTP.get(session_results_url))
-    end
-
-    def session_query_params
-      URI.encode_www_form('AccessToken' => eyes_test_result.secret_token, 'apiKey' => eyes.api_key, 'format' => 'json')
-    end
-
-    def session_results_url
-      url = URI.parse(eyes_test_result.api_session_url)
-      url.query = session_query_params
-      url
-    end
-
-    it 'check' do
-      driver.get('https://applitools.com/helloworld')
-      eyes.check('Blah', Applitools::Selenium::Target.window())
-      @eyes_test_result = eyes.close
-      expect(@eyes_test_result.passed?).to be_truthy
-      expect(session_results['startInfo']['defaultMatchSettings']['accessibilitySettings']).to eq({'level' => 'AA', 'version' => 'WCAG_2_0'})
-
-      eyes.configure do |c|
-        c.accessibility_validation = nil
+          actual_accessibility_settings = session_results['actualAppOutput'][0]['imageMatchSettings']['accessibility']
+          expect(actual_accessibility_settings).to include({'type'=>'LargeText', 'isDisabled'=>false, 'left'=>115, 'top'=>928, 'width'=>456, 'height'=>306})
+          expect(actual_accessibility_settings).to include({'type'=>'LargeText', 'isDisabled'=>false, 'left'=>8, 'top'=>1270, 'width'=>675, 'height'=>206})
+          expect(actual_accessibility_settings).to include({'type'=>'LargeText', 'isDisabled'=>false, 'left'=>10, 'top'=>284, 'width'=>800, 'height'=>500})
+        end
       end
 
-      driver1.get('https://applitools.com/helloworld')
-      eyes.check('Blah', Applitools::Selenium::Target.window())
-      @eyes_test_result = eyes.close
-      expect(@eyes_test_result.passed?).to be_truthy
-      expect(session_results['startInfo']['defaultMatchSettings']['accessibilitySettings']).to be nil
+      def session_results(api_key, test_result)
+        Oj.load(Net::HTTP.get(session_results_url(api_key, test_result)))
+      end
 
-      driver.quit
+      def session_query_params(api_key, test_results)
+        URI.encode_www_form('AccessToken' => test_results.secret_token, 'apiKey' => api_key, 'format' => 'json')
+      end
+
+      def session_results_url(api_key, test_result)
+        url = URI.parse(test_result.api_session_url)
+        url.query = session_query_params(api_key, test_result)
+        url
+      end
+
+    end
+    context 'classic selenium' do
+      let(:runner) { Applitools::ClassicRunner.new }
+      let(:suffix) { '' }
+      it_should_behave_like 'accessibility settings'
     end
 
-    it 'check regions' do
-      driver2.get('https://demo.applitools.com/')
-      eyes.check(
-        'Accessibility regions',
-        Applitools::Selenium::Target.window
-            .accessibility(:css, 'input', type: Applitools::AccessibilityRegionType::IGNORE_CONTRAST)
-            # .accessibility(:css, 'input#password', type: Applitools::AccessibilityRegionType::IGNORE_CONTRAST)
-      )
-      @eyes_test_result = eyes.close(false)
-      local_session_results = session_results
-      expect(local_session_results['actualAppOutput'][0]['imageMatchSettings']['accessibility']).to(
-        include({'type'=>'IgnoreContrast', 'isDisabled'=>false, 'left'=>255, 'top'=>347, 'width'=>290, 'height'=>37})
-      )
-      expect(local_session_results['actualAppOutput'][0]['imageMatchSettings']['accessibility']).to(
-          include({'type'=>'IgnoreContrast', 'isDisabled'=>false, 'left'=>255, 'top'=>425, 'width'=>290, 'height'=>37})
-      )
-      driver.quit
+    context 'visual grid' do
+      let(:runner) { Applitools::Selenium::VisualGridRunner.new(5) }
+      let(:suffix) { '_VG' }
+      it_should_behave_like 'accessibility settings'
     end
   end
 end
