@@ -279,9 +279,7 @@ module Applitools::Connectivity
     end
 
     def start_session(session_start_info)
-      request_body = Oj.dump(
-        startInfo: Applitools::Utils.camelcase_hash_keys(session_start_info.to_hash)
-      )
+      request_body = session_start_info.json
       res = long_post(
         endpoint_url, body: request_body
       )

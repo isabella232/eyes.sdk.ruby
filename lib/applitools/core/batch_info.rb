@@ -19,14 +19,18 @@ module Applitools
       self.id = SecureRandom.uuid unless id
     end
 
-    def to_hash
+    def json_data
       {
-        'id' => id,
-        'name' => name,
-        'startedAt' => @started_at.iso8601,
-        'batchSequenceName' => sequence_name,
-        'notifyOnCompletion' => 'true'.casecmp(notify_on_completion || '') == 0 ? true : false
+          'id' => id,
+          'name' => name,
+          'startedAt' => @started_at.iso8601,
+          'batchSequenceName' => sequence_name,
+          'notifyOnCompletion' => 'true'.casecmp(notify_on_completion || '') == 0 ? true : false
       }
+    end
+
+    def to_hash
+      json_data
     end
 
     def to_s

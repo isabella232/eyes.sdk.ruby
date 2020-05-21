@@ -151,14 +151,14 @@ describe Applitools::EyesBase, mock_connection: true do
 
   context 'add_property' do
     it 'add_property adds a hash to properties array' do
-      expect(subject.instance_variable_get(:@properties)).to be_a Array
-      expect(subject.instance_variable_get(:@properties)).to be_empty
+      expect(subject.properties).to be_a Array
+      expect(subject.properties).to be_empty
       subject.add_property :a, :b
-      expect(subject.instance_variable_get(:@properties).first).to be_a Hash
-      expect(subject.instance_variable_get(:@properties).first).to include :name => :a, :value => :b
+      expect(subject.properties.first).to be_a Hash
+      expect(subject.properties.first).to include :name => :a, :value => :b
     end
     it 'passes properties array to start_session' do
-      allow(subject).to receive(:get_viewport_size).and_return({})
+      allow(subject).to receive(:get_viewport_size).and_return(Applitools::RectangleSize.new(800, 600))
       allow(subject).to receive(:base_agent_id).and_return({})
       expect(Applitools::SessionStartInfo).to receive(:new) do |*args|
         expect(args.first).to be_a Hash
@@ -203,7 +203,7 @@ describe Applitools::EyesBase, mock_connection: true do
   context 'open_base()', clear_environment: true do
     before do
       allow(subject).to receive(:base_agent_id).and_return nil
-      allow(subject).to receive(:get_viewport_size).and_return(width: 800, height: 600)
+      allow(subject).to receive(:get_viewport_size).and_return(Applitools::RectangleSize.new(800, 600))
       allow(subject).to receive(:app_environment).and_return(
         Applitools::AppEnvironment.new(
           :os => :host_os,

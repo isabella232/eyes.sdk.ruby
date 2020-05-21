@@ -87,7 +87,6 @@ module Applitools
       self.results = []
       self.allow_empty_screenshot = true
       @inferred_environment = nil
-      @properties = []
       @server_scale = 0
       @server_remainder = 0
       get_app_output_method = ->(r, s) { get_app_output_with_screenshot r, s }
@@ -149,10 +148,6 @@ module Applitools
 
     def new_session?
       running_session && running_session.new_session?
-    end
-
-    def add_property(name, value)
-      @properties << { name: name, value: value }
     end
 
     def abort_if_not_closed
@@ -319,11 +314,14 @@ module Applitools
 
       tag = '' if tag.nil?
 
-      session_start_info = SessionStartInfo.new agent_id: base_agent_id, app_id_or_name: app_name,
-         scenario_id_or_name: test_name, batch_info: batch,
-         env_name: baseline_env_name, environment: app_environment,
-         default_match_settings: default_match_settings.json_data,
-         branch_name: branch_name, parent_branch_name: parent_branch_name, properties: properties
+      self.session_start_info = SessionStartInfo.new agent_id: base_agent_id, app_id_or_name: app_name,
+                                                     scenario_id_or_name: test_name, batch_info: batch,
+                                                     baseline_env_name: baseline_env_name, environment: app_env,
+                                                     default_match_settings: default_match_settings,
+                                                     environment_name: environment_name, session_type: session_type,
+                                                     branch_name: branch_name, parent_branch_name: parent_branch_name,
+                                                     baseline_branch_name: baseline_branch_name, save_diffs: save_diffs,
+                                                     properties: properties
 
       match_window_data.start_info = session_start_info
       match_window_data.update_baseline_if_new = save_new_tests
@@ -481,7 +479,7 @@ module Applitools
     attr_accessor :running_session, :last_screenshot, :scale_provider, :session_start_info,
       :should_match_window_run_once_on_timeout, :app_output_provider, :failed
 
-    attr_reader :user_inputs, :properties
+    attr_reader :user_inputs
 
     private :full_agent_id, :full_agent_id=
 
@@ -596,9 +594,11 @@ module Applitools
 
       self.session_start_info = SessionStartInfo.new agent_id: base_agent_id, app_id_or_name: app_name,
                                                 scenario_id_or_name: test_name, batch_info: batch,
-                                                env_name: baseline_env_name, environment: app_env,
-                                                default_match_settings: default_match_settings.json_data,
+                                                baseline_env_name: baseline_env_name, environment: app_env,
+                                                default_match_settings: default_match_settings,
+                                                environment_name: environment_name, session_type: session_type,
                                                 branch_name: branch_name, parent_branch_name: parent_branch_name,
+                                                baseline_branch_name: baseline_branch_name, save_diffs: save_diffs,
                                                 properties: properties
 
       logger.info 'Starting server session...'

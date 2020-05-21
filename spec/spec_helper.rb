@@ -13,7 +13,7 @@ Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 RSpec.configure do |config|
   config.before mock_connection: true do
     allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:start_session) do
-      Applitools::Session.new('dummy_id', 'dummy_url', true)
+      Applitools::Session.new('dummy_id', 'dummy_url')
     end
 
     allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:stop_session) do

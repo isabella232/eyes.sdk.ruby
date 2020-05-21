@@ -8,6 +8,7 @@ require 'applitools/core/match_level'
 require 'applitools/core/match_level_setter'
 require 'applitools/connectivity/server_connector'
 require 'applitools/core/image_match_settings'
+require 'active_support/deprecation'
 
 module Applitools
   class EyesBaseConfiguration < AbstractConfiguration
@@ -21,7 +22,8 @@ module Applitools
       api_key: ENV['APPLITOOLS_API_KEY'] || ENV['bamboo_APPLITOOLS_API_KEY'] || '',
       save_new_tests: true,
       default_match_settings: Applitools::ImageMatchSettings.new,
-      accessibility_validation: nil
+      accessibility_validation: nil,
+      properties: []
     }.freeze
 
     class << self
@@ -111,6 +113,7 @@ module Applitools
     int_field :remainder
     boolean_field :ignore_caret
     object_field :accessibility_validation, Applitools::AccessibilitySettings, true
+    object_field :properties, Array
 
     methods_to_delegate.delete(:batch_info)
     methods_to_delegate.delete(:batch_info=)
@@ -168,7 +171,11 @@ module Applitools
       default_match_settings.accessibility_validation = value
     end
 
+    def add_property(name, value)
+      properties << { name: name, value: value } if name && value
+    end
 
     methods_to_delegate.push(:set_proxy)
+    methods_to_delegate.push(:add_property)
   end
 end

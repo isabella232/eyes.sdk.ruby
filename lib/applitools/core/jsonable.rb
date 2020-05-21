@@ -7,9 +7,10 @@ module Applitools
       base.extend ClassMethods
       base.class_eval do
         class << self
-          attr_accessor :json_methods
+          attr_accessor :json_methods, :wrap_data_block
         end
         @json_methods = {}
+        @wrap_data_block = nil
       end
     end
 
@@ -34,10 +35,16 @@ module Applitools
       def json_fields(*args)
         args.each { |m| json_field m }
       end
+
+      def wrap_data(&block)
+        @wrap_data_block = block
+      end
     end
 
     def json_data
-      self.class.json_methods.sort.map { |k, v| [k, json_value(send(v))] }.to_h
+      result = self.class.json_methods.sort.map { |k, v| [k, json_value(send(v))] }.to_h
+      result = self.class.wrap_data_block.call(result) if self.class.wrap_data_block.is_a? Proc
+      result
     end
 
     def json

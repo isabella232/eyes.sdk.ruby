@@ -12,14 +12,18 @@ module Applitools
       self.device_info = options[:device_info]
     end
 
-    def to_hash
+    def json_data
       {
-        'os' => os,
-        'hostingApp' => hosting_app,
-        'displaySize' => display_size && display_size.to_hash,
-        'inferred' => inferred_environment,
-        'deviceInfo' => device_info.nil? || device_info.empty? ? 'Desktop' : device_info + ' (Chrome emulation)'
+          'os' => os,
+          'hostingApp' => hosting_app,
+          'displaySize' => display_size && display_size.to_hash,
+          'inferred' => inferred_environment,
+          'deviceInfo' => device_info.nil? || device_info.empty? ? 'Desktop' : device_info + ' (Chrome emulation)'
       }
+    end
+
+    def to_hash
+      json_data
     end
 
     def to_s

@@ -1,3 +1,7 @@
+## [Eyes.sdk.ruby 3.17.1] - 2020-05-26
+## Fixed
+- eyes.properties for VG [Trello_1804](https://trello.com/c/Jt2BYz0e/1804-ruby-selenium-addproperty-method-not-recognized-when-running-with-visualgridrunner)
+- SessionStartInfo parameters were not passed to Json correctly
 ## [Eyes.sdk.ruby 3.17.0] - 2020-05-18
 ## Added
 - eyes.accessibility_validation(Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityVersion::WCAG_2_0)) - [Trello_1767](https://trello.com/c/gq69woeK/1767-all-sdks-accessibility-accessiblity-guidelines-version-support-and-additional-verifications?menu=filter&filter=due:notdue)
