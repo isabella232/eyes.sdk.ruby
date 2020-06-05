@@ -36,11 +36,17 @@ module Applitools
 
       def add_browser(*args)
         case args.size
-        when 0, 1
+        when 0
+          browser = Applitools::Selenium::DesktopBrowserInfo.new
+        when 1
           b = args[0]
-          browser = b || Applitools::Selenium::RenderBrowserInfo.new
+          raise(
+            Applitools::EyesIllegalArgument,
+            'Expected :browser to be an IRenderBrowserInfo instance!'
+          ) unless b.is_a? IRenderBrowserInfo
+          browser = b
         when 3
-          browser = Applitools::Selenium::RenderBrowserInfo.new.tap do |bi|
+          browser = Applitools::Selenium::DesktopBrowserInfo.new.tap do |bi|
             bi.viewport_size = Applitools::RectangleSize.new(args[0], args[1])
             bi.browser_type = args[2]
           end
@@ -51,11 +57,18 @@ module Applitools
         self
       end
 
+      def add_browsers(browsers)
+        browsers.each do |browser|
+          add_browser(browser)
+        end
+        self
+      end
+
       def add_device_emulation(device_name, orientation = Orientations::PORTRAIT)
         Applitools::ArgumentGuard.not_nil device_name, 'device_name'
         raise Applitools::EyesIllegalArgument, 'Wrong device name!' unless Devices.enum_values.include? device_name
         emu = Applitools::Selenium::ChromeEmulationInfo.new(device_name, orientation)
-        add_browser { |b| b.emulation_info(emu) }
+        add_browser emu
       end
 
       def viewport_size
@@ -66,6 +79,7 @@ module Applitools
         return from_browsers_info.viewport_size if from_browsers_info
         nil
       end
+
     end
   end
 end

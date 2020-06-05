@@ -20,8 +20,8 @@ end
 
 Applitools::Selenium.require_dir 'selenium/concerns'
 Applitools::Selenium.require_dir 'selenium/scripts'
-Applitools::Selenium.require_dir 'selenium/visual_grid'
 Applitools::Selenium.require_dir 'selenium'
+Applitools::Selenium.require_dir 'selenium/visual_grid'
 Applitools::Selenium.require_dir 'selenium/dom_capture'
 Applitools::Selenium.require_dir 'selenium/css_parser'
 

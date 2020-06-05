@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.17.2] - 2020-06-06
+## Added
+- safari on ios device emulation for UFG [Trello_1872](https://trello.com/c/bykk2rzB/1872-ufg-safari-on-ios-simulators-support)
 ## [Eyes.sdk.ruby 3.17.1] - 2020-05-26
 ## Fixed
 - eyes.properties for VG [Trello_1804](https://trello.com/c/Jt2BYz0e/1804-ruby-selenium-addproperty-method-not-recognized-when-running-with-visualgridrunner)

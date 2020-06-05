@@ -8,7 +8,6 @@ require 'applitools/core/match_level'
 require 'applitools/core/match_level_setter'
 require 'applitools/connectivity/server_connector'
 require 'applitools/core/image_match_settings'
-require 'active_support/deprecation'
 
 module Applitools
   class EyesBaseConfiguration < AbstractConfiguration

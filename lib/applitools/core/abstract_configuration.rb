@@ -11,9 +11,11 @@ module Applitools
     def initialize
       @config_hash = {}
       self.validation_errors = {}
-      default_config = self.class.default_config
-      default_config.keys.each do |k|
-        send "#{k}=", default_config[k]
+      if self.class.respond_to? :default_config
+        default_config = self.class.default_config
+        default_config.keys.each do |k|
+          send "#{k}=", default_config[k]
+        end
       end
     end
 

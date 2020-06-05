@@ -12,6 +12,7 @@ module BrowserTypes
   SAFARI = :'safari-0'
   SAFARI_ONE_VERSION_BACK = :'safari-1'
   SAFARI_TWO_VERSIONS_BACK = :'safari-2'
+  IOS_SAFARI = :safari
 
   EDGE_CHROMIUM = :'edgechromium'
   EDGE_CHROMIUM_ONE_VERSION_BACK = :'edgechromium-1'
@@ -52,7 +53,8 @@ module BrowserTypes
       EDGE_LEGACY,
       IE_10,
       EDGE_CHROMIUM,
-      EDGE_CHROMIUM_ONE_VERSION_BACK
+      EDGE_CHROMIUM_ONE_VERSION_BACK,
+      IOS_SAFARI
     ]
   end
 end

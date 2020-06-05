@@ -249,6 +249,7 @@ module Applitools
             r.size_mode = size_mode
             r.region = region_to_check
             r.emulation_info = running_test.browser_info.emulation_info if running_test.browser_info.emulation_info
+            r.ios_device_info = running_test.browser_info.ios_device_info if running_test.browser_info.ios_device_info
           end
 
           requests << Applitools::Selenium::RenderRequest.new(
@@ -257,7 +258,8 @@ module Applitools
             dom: dom,
             resources: request_resources,
             render_info: r_info,
-            browser: { name: running_test.browser_info.browser_type, platform: running_test.browser_info.platform },
+            browser: { name: running_test.browser_info.browser_type },
+            platform: { name: running_test.browser_info.platform },
             script_hooks: script_hooks,
             selectors_to_find_regions_for: region_selectors,
             send_dom: if running_test.eyes.configuration.send_dom.nil?
