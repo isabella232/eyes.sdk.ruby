@@ -18,7 +18,7 @@ module Applitools
           'hostingApp' => hosting_app,
           'displaySize' => display_size && display_size.to_hash,
           'inferred' => inferred_environment,
-          'deviceInfo' => device_info.nil? || device_info.empty? ? 'Desktop' : device_info + ' (Chrome emulation)'
+          'deviceInfo' => device_info.nil? || device_info.empty? ? 'Desktop' : device_info
       }
     end
 

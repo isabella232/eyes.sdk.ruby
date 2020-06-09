@@ -1,3 +1,10 @@
+## [Eyes.sdk.ruby 3.17.3] - 2020-06-06
+## Deprecated
+- BrowserTypes module is deprecated in a favor of BrowserType
+- Orientations module is deprecated in a favor of Orientation
+## Fixed
+- IosDeviceOrientation instead of IosDeviceOrientations(plural)
+## Deprecated
 ## [Eyes.sdk.ruby 3.17.2] - 2020-06-06
 ## Added
 - safari on ios device emulation for UFG [Trello_1872](https://trello.com/c/bykk2rzB/1872-ufg-safari-on-ios-simulators-support)

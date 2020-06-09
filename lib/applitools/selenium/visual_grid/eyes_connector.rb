@@ -30,7 +30,7 @@ module Applitools
       def open(driver, browser_info)
         self.driver = driver
         self.browser_info = browser_info
-        self.device_name = browser_info && browser_info.emulation_info && browser_info.emulation_info.device_name
+        self.device_name = browser_info.device_name
         logger.info "opening EyesConnector for #{config.short_description} with viewport size: #{browser_info}"
         config.viewport_size = browser_info.viewport_size
         title

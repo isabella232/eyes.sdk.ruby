@@ -18,6 +18,10 @@ module Applitools
         end
       end
 
+      # def device_name
+      #   emulation_info.device_name
+      # end
+      #
       def initialize(*args)
         super()
         case args[0]

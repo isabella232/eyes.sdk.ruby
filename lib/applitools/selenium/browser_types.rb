@@ -1,6 +1,17 @@
 # frozen_string_literal: true
 module BrowserTypes
   extend self
+  def const_missing(name)
+    puts 'Please, prefer using BrowserType instead of BrowserTypes(plural).'
+    BrowserType.const_get(name)
+  end
+
+  def enum_values
+    BrowserType.enum_values
+  end
+end
+module BrowserType
+  extend self
   CHROME = :'chrome-0'
   CHROME_ONE_VERSION_BACK = :'chrome-1'
   CHROME_TWO_VERSIONS_BACK = :'chrome-2'

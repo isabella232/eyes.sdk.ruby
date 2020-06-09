@@ -1,4 +1,4 @@
-module IosScreenshotOrientations
+module IosScreenshotOrientation
   extend self
   PORTRAIT ='portrait'
   LANDSCAPE_LEFT = 'landscapeLeft'
