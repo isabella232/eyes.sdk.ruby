@@ -248,8 +248,11 @@ module Applitools
             r.height = running_test.browser_info.viewport_size.height
             r.size_mode = size_mode
             r.region = region_to_check
-            r.emulation_info = running_test.browser_info.emulation_info if running_test.browser_info.emulation_info
-            r.ios_device_info = running_test.browser_info.ios_device_info if running_test.browser_info.ios_device_info
+            if running_test.browser_info.respond_to?(:emulation_info) && running_test.browser_info.emulation_info
+              r.emulation_info = running_test.browser_info.emulation_info
+            elsif running_test.browser_info.respond_to?(:ios_device_info) && running_test.browser_info.ios_device_info
+              r.ios_device_info = running_test.browser_info.ios_device_info
+            end
           end
 
           requests << Applitools::Selenium::RenderRequest.new(

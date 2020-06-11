@@ -7,6 +7,8 @@ require 'eyes_capybara'
 require 'uri'
 require 'net/http'
 require 'webdrivers'
+require 'test_utils'
+require 'test_utils/selenium_workaround'
 
 Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
 
@@ -29,12 +31,4 @@ RSpec.configure do |config|
     Applitools::Helpers.instance_variable_set :@environment_variables, {}
   end
 
-  config.include_context 'selenium workaround', selenium: true
-  config.include_context 'selenium workaround', visual_grid: true
-
-  config.after(:suite) do
-    next if defined? ParallelTests && !ParallelTests.last_process?
-    puts $vg_runner.get_all_test_results if $vg_runner
-    puts $classic_runner.get_all_test_results if $classic_runner
-  end
 end

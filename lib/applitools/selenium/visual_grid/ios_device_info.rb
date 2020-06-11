@@ -11,6 +11,9 @@ module Applitools
             viewport_size: Applitools::RectangleSize.from_any_argument(width: 0, height: 0)
         }
       end
+
+      object_field :ios_device_info, Applitools::Selenium::EmulationBaseInfo
+
       class << self
         def default_config
           DEFAULT_CONFIG.call
@@ -23,6 +26,14 @@ module Applitools
           ei.device_name = options[:device_name]
           ei.screen_orientation = options[:screen_orientation] || options[:orientation] || IosScreenshotOrientation::PORTRAIT
         end
+      end
+
+      def to_s
+        "#{ios_device_info.device_name} - #{ios_device_info.screen_orientation}"
+      end
+
+      def device_name
+        ios_device_info.device_name
       end
 
       private

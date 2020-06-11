@@ -1,3 +1,4 @@
+require 'test_utils'
 RSpec.describe 'Session start info' do
   let(:start_info) do
     Applitools::SessionStartInfo.new agent_id: 'base_agent_id', app_id_or_name: 'app_name',
@@ -8,19 +9,18 @@ RSpec.describe 'Session start info' do
       compare_with_parent_branch: 'compare_with_parent_branch', baseline_env_name: 'baseline_env_name',
       save_diffs: true, session_type: 'session_type', baseline_branch_name: 'baseline_branch_name'
   end
-  it 'hash for json' do
+  it 'hash for json', report_me: true do
     expect(start_info.json_data).to be_a Hash
-    expect(start_info.json_data[:batchInfo]).to be_a Hash
-    expect(start_info.json_data[:environment]).to be_a Hash
-    expect(start_info.json_data[:defaultMatchSettings]).to be_a Hash
-    expect(start_info.json_data[:properties]).to be_a Array
-    expect(start_info.json_data).to include(
+    expect(start_info.json_data[:startInfo][:batchInfo]).to be_a Hash
+    expect(start_info.json_data[:startInfo][:environment]).to be_a Hash
+    expect(start_info.json_data[:startInfo][:defaultMatchSettings]).to be_a Hash
+    expect(start_info.json_data[:startInfo][:properties]).to be_a Array
+    expect(start_info.json_data[:startInfo]).to include(
                                     :'agentId' => 'base_agent_id',
                                     :'appIdOrName' => 'app_name',
                                     :'branchName' => 'branch_name',
                                     :'compareWithParentBranch' => 'compare_with_parent_branch',
                                     # :'envName' => 'baseline_env_name',
-                                    :'parentBranchName' => 'parent_branch_name',
                                     :'scenarioIdOrName' => 'test_name',
                                     :'verId' => 'ver_id',
                                     :sessionType => 'session_type',

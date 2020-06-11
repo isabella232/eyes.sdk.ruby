@@ -2,10 +2,14 @@
 require 'spec_helper'
 
 RSpec.describe 'VG' do
+  def test_reporting_group
+    'selenium'
+  end
+
   # This :before hook will be executed BEFORE hooks, defined in :selenium or :visual_grid contexts
   before(:each) { eyes.accessibility_validation = Applitools::AccessibilityLevel::AAA }
 
-  describe 'Accessibility', visual_grid: true do
+  describe 'Accessibility', visual_grid: true, report_me: true do
     let(:url_for_test) { 'https://applitools.github.io/demo/TestPages/FramesTestPage/' }
     let(:target) do
       Applitools::Selenium::Target.window.accessibility(

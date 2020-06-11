@@ -2,9 +2,13 @@
 require 'spec_helper'
 
 RSpec.describe 'Selenium' do
+  def test_reporting_group
+    'selenium'
+  end
+
   before(:each) { eyes.accessibility_validation = Applitools::AccessibilityLevel::AAA }
 
-  describe 'Accessibility', selenium: true do
+  describe 'Accessibility', selenium: true, report_me: true do
     let(:url_for_test) { 'https://applitools.github.io/demo/TestPages/FramesTestPage/' }
     let(:target) do
       Applitools::Selenium::Target.window.accessibility(

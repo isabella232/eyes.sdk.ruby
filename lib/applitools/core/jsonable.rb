@@ -42,7 +42,11 @@ module Applitools
     end
 
     def json_data
-      result = self.class.json_methods.sort.map { |k, v| [k, json_value(send(v))] }.to_h
+      result = self.class.json_methods.sort.map do |k,v|
+        val = json_value(send(v))
+        next if val.nil?
+        [k, val]
+      end.compact.to_h
       result = self.class.wrap_data_block.call(result) if self.class.wrap_data_block.is_a? Proc
       result
     end

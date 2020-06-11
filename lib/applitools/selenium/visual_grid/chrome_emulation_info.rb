@@ -18,6 +18,8 @@ module Applitools
         end
       end
 
+      object_field :emulation_info, Applitools::Selenium::EmulationBaseInfo
+
       # def device_name
       #   emulation_info.device_name
       # end
@@ -37,6 +39,15 @@ module Applitools
           end
         end
       end
+
+      def to_s
+        "#{emulation_info.device_name} - #{emulation_info.screen_orientation}"
+      end
+
+      def device_name
+        emulation_info.device_name + ' (chrome emulation)'
+      end
+
 
       private
 

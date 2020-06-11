@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 require 'applitools/selenium/browser_types'
-
+# We should not break the API
 module Applitools
   module Selenium
-    class DesktopBrowserInfo < IRenderBrowserInfo
+    class RenderBrowserInfo < IRenderBrowserInfo
       DEFAULT_CONFIG = proc do
         {
             platform: 'linux',
@@ -12,6 +12,9 @@ module Applitools
             viewport_size: Applitools::RectangleSize.from_any_argument(width: 0, height: 0)
         }
       end
+
+      object_field :ios_device_info, Applitools::Selenium::EmulationBaseInfo
+      object_field :emulation_info, Applitools::Selenium::EmulationBaseInfo
 
       class << self
         def default_config
@@ -28,6 +31,7 @@ module Applitools
       end
 
       def platform
+        return 'ios' if ios_device_info
         case browser_type
         when BrowserTypes::EDGE_LEGACY, BrowserTypes::EDGE_CHROMIUM, BrowserTypes::EDGE_CHROMIUM_ONE_VERSION_BACK
           'windows'
@@ -36,10 +40,23 @@ module Applitools
         end
       end
 
-      def device_name
-        'desktop'
+      def to_s
+        if emulation_info
+          "#{emulation_info.device_name} - #{emulation_info.screen_orientation}"
+        elsif ios_device_info
+          "#{ios_device_info.device_name} - #{ios_device_info.screen_orientation}"
+        end
+        "#{viewport_size} (#{browser_type})"
       end
 
+      def device_name
+        if ios_device_info
+          return ios_device_info.device_name
+        elsif emulation_info
+          return emulation_info.device_name + ' (chrome emulation)'
+        end
+        'desktop'
+      end
     end
   end
 end

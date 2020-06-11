@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.17.4] - 2020-06-11
+## Fixed
+- restricted to set emulation_info && ios_device_info for DesktopBrowserInfo
 ## [Eyes.sdk.ruby 3.17.3] - 2020-06-06
 ## Deprecated
 - BrowserTypes module is deprecated in a favor of BrowserType

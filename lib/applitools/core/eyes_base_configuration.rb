@@ -12,9 +12,9 @@ require 'applitools/core/image_match_settings'
 module Applitools
   class EyesBaseConfiguration < AbstractConfiguration
     DEFAULT_CONFIG = {
-      branch_name: ENV['APPLITOOLS_BRANCH'] || '',
-      parent_branch_name: ENV['APPLITOOLS_PARENT_BRANCH'] || '',
-      baseline_branch_name: ENV['APPLITOOLS_BASELINE_BRANCH'] || '',
+      branch_name: ENV['APPLITOOLS_BRANCH'],
+      parent_branch_name: ENV['APPLITOOLS_PARENT_BRANCH'],
+      baseline_branch_name: ENV['APPLITOOLS_BASELINE_BRANCH'],
       save_diffs: false,
       server_url: ENV['APPLITOOLS_SERVER_URL'] ||
         ENV['bamboo_APPLITOOLS_SERVER_URL'] || Applitools::Connectivity::ServerConnector::DEFAULT_SERVER_URL,

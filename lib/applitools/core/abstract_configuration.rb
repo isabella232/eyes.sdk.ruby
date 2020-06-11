@@ -14,7 +14,7 @@ module Applitools
       if self.class.respond_to? :default_config
         default_config = self.class.default_config
         default_config.keys.each do |k|
-          send "#{k}=", default_config[k]
+          send "#{k}=", default_config[k] unless default_config[k].nil?
         end
       end
     end

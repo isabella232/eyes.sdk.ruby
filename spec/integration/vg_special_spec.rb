@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 require_relative 'test_double_open_close'
 
-RSpec.describe 'VG special cases' do
+RSpec.describe 'VG special cases', report_me: true do
   before(:context) do
     # Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
   end

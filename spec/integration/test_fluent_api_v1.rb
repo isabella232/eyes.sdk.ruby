@@ -74,17 +74,21 @@ RSpec.shared_examples 'Fluent API' do
 
   it('TestCheckElementWithIgnoreRegionBySameElement_Fluent') do
     element = driver.find_element(:id, 'overflowing-div-image')
-    expected_ignore_regions(Applitools::Region.new(0, 0, 304, 184))
     eyes.check('Fluent - Region by element', Applitools::Selenium::Target.region(element).ignore(element))
+    app_output(eyes.api_key).with_ignore_regions do |actual_ignore_regions|
+      expect(actual_ignore_regions).to(
+        include(Applitools::Region.new(0, 0, 304, 184))
+      )
+    end
   end
 
   it('TestCheckFullWindowWithMultipleIgnoreRegionsBySelector_Fluent') do
-    expected_ignore_regions(
-      Applitools::Region.new(122, 928, 456, 306),
-      Applitools::Region.new(8, 1270, 690, 206),
-      Applitools::Region.new(10, 284, 800, 500)
-    )
     eyes.check('Fluent - Region by element', Applitools::Selenium::Target.window.fully.ignore(:css, '.ignore'))
+    app_output(eyes.api_key).with_ignore_regions do |actual_ignore_regions|
+      expect(actual_ignore_regions).to include(Applitools::Region.new(122, 928, 456, 306))
+      expect(actual_ignore_regions).to include(Applitools::Region.new(8, 1270, 690, 206))
+      expect(actual_ignore_regions).to include(Applitools::Region.new(10, 284, 800, 500))
+    end
   end
 
   it('TestScrollbarsHiddenAndReturned_Fluent') do
