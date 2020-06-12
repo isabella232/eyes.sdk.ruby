@@ -21,10 +21,10 @@ module Applitools
       end
 
       def initialize(options = {})
-        super()
+        super
         self.ios_device_info = EmulationInfo.new.tap do |ei|
           ei.device_name = options[:device_name]
-          ei.screen_orientation = options[:screen_orientation] || options[:orientation] || IosScreenshotOrientation::PORTRAIT
+          ei.screen_orientation = options[:screen_orientation] || options[:orientation] || IosScreenOrientation::PORTRAIT
         end
       end
 
@@ -40,7 +40,7 @@ module Applitools
 
       class EmulationInfo < EmulationBaseInfo
         enum_field :device_name, IosDeviceName.enum_values
-        enum_field :screen_orientation, IosScreenshotOrientation.enum_values
+        enum_field :screen_orientation, IosScreenOrientation.enum_values
 
         def json_data
           {

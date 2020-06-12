@@ -1,3 +1,8 @@
+## [Eyes.sdk.ruby 3.17.5] - 2020-06-15
+## Added
+- The ability to set :baseline_env_name for DesktopBrowserInfo, IosDeviceInfo and ChromeEmulationInfo
+## Fixed
+- IosScreenOrientation instead of the IosScreenshotOrientation
 ## [Eyes.sdk.ruby 3.17.4] - 2020-06-11
 ## Fixed
 - restricted to set emulation_info && ios_device_info for DesktopBrowserInfo

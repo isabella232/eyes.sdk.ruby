@@ -23,7 +23,7 @@ module Applitools
       end
 
       def initialize(options = {})
-        super()
+        super
         if options[:width] && options[:height]
           self.viewport_size = Applitools::RectangleSize.from_any_argument(width: options[:width], height: options[:height])
         end
@@ -33,7 +33,7 @@ module Applitools
       def platform
         return 'ios' if ios_device_info
         case browser_type
-        when BrowserTypes::EDGE_LEGACY, BrowserTypes::EDGE_CHROMIUM, BrowserTypes::EDGE_CHROMIUM_ONE_VERSION_BACK
+        when BrowserType::EDGE_LEGACY, BrowserType::EDGE_CHROMIUM, BrowserType::EDGE_CHROMIUM_ONE_VERSION_BACK
           'windows'
         else
           'linux'

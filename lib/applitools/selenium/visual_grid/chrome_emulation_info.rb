@@ -7,7 +7,7 @@ module Applitools
       DEFAULT_CONFIG = proc do
         {
             platform: 'linux',
-            browser_type: BrowserTypes::CHROME,
+            browser_type: BrowserType::CHROME,
             # size_mode: 'full-page',
             viewport_size: Applitools::RectangleSize.from_any_argument(width: 0, height: 0)
         }
@@ -25,7 +25,7 @@ module Applitools
       # end
       #
       def initialize(*args)
-        super()
+        super
         case args[0]
         when String
           self.emulation_info = EmulationInfo.new.tap do |ei|
