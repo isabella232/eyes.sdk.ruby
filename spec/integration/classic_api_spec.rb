@@ -9,11 +9,11 @@ RSpec.describe 'Classic API', report_me: true do
     include_examples 'Classic API'
   end
 
-  context 'Eyes Selenium SDK - Classic API', selenium: true, scroll: true do
+  context 'Eyes Selenium SDK - Classic API (scroll)', selenium: true, scroll: true do
     include_examples 'Classic API'
   end
 
-  context 'Eyes Selenium SDK - Classic API', visual_grid: true do
+  context 'Eyes Selenium SDK - Classic API (VG)', visual_grid: true do
     include_examples 'Classic API'
   end
 end

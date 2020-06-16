@@ -6,6 +6,7 @@ require_relative './obtain_actual_app_output'
 RSpec.shared_context 'selenium workaround' do
   include Applitools::TestUtils::ObtainActualAppOutput
   before(:all) do
+    @tests_to_skip = Applitools::TestUtils::PendingTestsList.test_list
     OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
     # Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
@@ -17,6 +18,7 @@ RSpec.shared_context 'selenium workaround' do
   end
 
   before do |example|
+    pending('Listed in the skip list') if @tests_to_skip.include?(test_name)
     eyes.hide_scrollbars = true
     eyes.save_new_tests = false
     eyes.force_full_page_screenshot = false
@@ -112,10 +114,10 @@ RSpec.shared_context 'selenium workaround' do
     name_modifiers.flatten.join('_')
   end
 
-  let(:test_name_modifiers) do
+  let(:test_name_modifiers) do |example|
     name_modifiers = []
     name_modifiers << :FPS if eyes.force_full_page_screenshot
-    name_modifiers << :Scroll unless eyes.stitch_mode == Applitools::STITCH_MODE[:css]
+    name_modifiers << :Scroll if example.metadata[:scroll]
     name_modifiers << :VG if @runner.is_a? Applitools::Selenium::VisualGridRunner
     name_modifiers
   end
@@ -136,7 +138,7 @@ RSpec.configure do |config|
   config.include_context 'selenium workaround', visual_grid: true
 
   config.after(:suite) do
-    next if defined? ParallelTests && !ParallelTests.last_process?
+    # next if defined?(ParallelTests) && !ParallelTests.last_process?
     puts $vg_runner.get_all_test_results if $vg_runner
     puts $classic_runner.get_all_test_results if $classic_runner
   end

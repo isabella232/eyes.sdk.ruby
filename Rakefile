@@ -24,10 +24,10 @@ unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
     t.rspec_opts = '--tag selenium'
   end
 
-  RSpec::Core::RakeTask.new(:spec_vg) do |t|
-    t.pattern = 'spec/integration/*_spec.rb'
-    t.rspec_opts = '--tag selenium'
-  end
+  # RSpec::Core::RakeTask.new(:spec_vg) do |t|
+  #   t.pattern = 'spec/integration/*_spec.rb'
+  #   t.rspec_opts = '--tag selenium'
+  # end
 
   RSpec::Core::RakeTask.new(:spec_vg) do |t|
     t.pattern = 'spec/integration/*_spec.rb'

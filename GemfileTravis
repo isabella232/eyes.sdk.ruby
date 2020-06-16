@@ -70,6 +70,7 @@ EYES_GEM_SPECS = {
   RUBY_2_4_0 => proc do |spec|
     gem 'rubocop', '<= 0.46.0'
     gem 'rake'
+    gem 'capybara', '~> 3.32'
   end
 }.freeze
 

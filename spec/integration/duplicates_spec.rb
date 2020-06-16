@@ -9,11 +9,11 @@ RSpec.describe 'duplicates', report_me: true do
     include_examples 'Eyes Selenium SDK - Duplicates'
   end
 
-  context 'Eyes Selenium SDK - Duplicates', selenium: true, scroll: true do
+  context 'Eyes Selenium SDK - Duplicates (Scroll)', selenium: true, scroll: true do
     include_examples 'Eyes Selenium SDK - Duplicates'
   end
 
-  context 'Eyes Selenium SDK - Duplicates', visual_grid: true, nsa: true do
+  context 'Eyes Selenium SDK - Duplicates (VG)', visual_grid: true, nsa: true do
     include_examples 'Eyes Selenium SDK - Duplicates'
   end
 end
