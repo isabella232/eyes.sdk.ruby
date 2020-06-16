@@ -1,3 +1,8 @@
+## [Eyes.sdk.ruby 3.17.5] - 2020-06-16
+## Fixed
+- config.add_device_emulation(name, orientation) is fixed [Trello_1914](https://trello.com/c/l7WRvhSP/1914-ruby-ultrafast-grid-adddeviceemulation-throws-error-after-upgrading-to-3175?menu=filter&filter=due:notdue)
+## Added
+- Appium driver support is ectended (Applitools::Appium::Eyes.new(driver: Appium::Driver.new)) [Trello_1913](https://trello.com/c/wQTgRNrN/1913-appium-ruby-regression-unknown-driver-appiumdriver0x00007fbaf9903448-applitoolseyeserror?menu=filter&filter=due:notdue)
 ## [Eyes.sdk.ruby 3.17.5] - 2020-06-15
 ## Added
 - The ability to set :baseline_env_name for DesktopBrowserInfo, IosDeviceInfo and ChromeEmulationInfo

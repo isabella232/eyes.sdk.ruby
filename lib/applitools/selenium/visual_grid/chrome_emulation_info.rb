@@ -25,18 +25,21 @@ module Applitools
       # end
       #
       def initialize(*args)
-        super
+        options = Applitools::Utils.extract_options!(args.dup)
+        super(options)
         case args[0]
         when String
           self.emulation_info = EmulationInfo.new.tap do |ei|
             ei.device_name = args[0]
-            ei.screen_orientation = args[1] || Orientations::PORTRAIT
+            ei.screen_orientation = args[1] || Orientation::PORTRAIT
           end
         when Hash
           self.emulation_info = EmulationInfo.new.tap do |ei|
             ei.device_name = args[0][:device_name]
-            ei.screen_orientation = args[0][:screen_orientation] || Orientations::PORTRAIT
+            ei.screen_orientation = args[0][:screen_orientation] || Orientation::PORTRAIT
           end
+        else
+          raise Applitools::EyesIllegalArgument, 'You should pass :device_name and :screen_orientation'
         end
       end
 
