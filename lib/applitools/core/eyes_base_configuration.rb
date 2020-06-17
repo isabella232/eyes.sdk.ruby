@@ -111,6 +111,7 @@ module Applitools
     int_field :scale
     int_field :remainder
     boolean_field :ignore_caret
+    boolean_field :ignore_displacements
     object_field :accessibility_validation, Applitools::AccessibilitySettings, true
     object_field :properties, Array
 
@@ -139,6 +140,14 @@ module Applitools
 
     def custom_setter_for_remainder(value)
       default_match_settings.remainder = value
+    end
+
+    def custom_setter_for_ignore_displacements(value)
+      default_match_settings.ignore_displacements = value
+    end
+
+    def custom_getter_for_ignore_displacements(_value)
+      default_match_settings.ignore_displacements
     end
 
     def custom_getter_for_exact(_value)

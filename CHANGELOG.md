@@ -1,3 +1,5 @@
+## Added
+- eyes.ignore_displacements= and eyes.ignore_displacements methods [Trello_841](https://trello.com/c/uwrYb1Vj/841-add-a-general-method-for-ignoredisplacements?menu=filter&filter=visual%20loca,due:notdue)
 ## [Eyes.sdk.ruby 3.17.5] - 2020-06-16
 ## Fixed
 - config.add_device_emulation(name, orientation) is fixed [Trello_1914](https://trello.com/c/l7WRvhSP/1914-ruby-ultrafast-grid-adddeviceemulation-throws-error-after-upgrading-to-3175?menu=filter&filter=due:notdue)

@@ -53,7 +53,9 @@ describe Applitools::EyesBase, mock_connection: true do
     :default_match_settings=,
     :add_property,
     :compare_with_parent_branch,
-    :compare_with_parent_branch=
+    :compare_with_parent_branch=,
+    :ignore_displacements,
+    :ignore_displacements=
   ]
 
   it_should_behave_like 'has private method', [
