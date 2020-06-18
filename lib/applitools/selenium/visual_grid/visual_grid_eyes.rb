@@ -154,6 +154,7 @@ module Applitools
             mod = Digest::SHA2.hexdigest(script_thread_result[:script_result])
 
             region_x_paths = get_regions_x_paths(target_to_check)
+
             render_task = RenderTask.new(
               "Render #{config.short_description} - #{tag}",
               script_thread_result[:result]['value'],
@@ -167,6 +168,10 @@ module Applitools
               Applitools::Utils::EyesSeleniumUtils.user_agent(driver),
               mod
             )
+          end
+
+          if size_mod == 'selector'
+            target_to_check.convert_coordinates(&Applitools::Selenium::VgMatchWindowData::CONVERT_COORDINATES)
           end
 
           title = begin

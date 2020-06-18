@@ -3,6 +3,15 @@
 module Applitools
   module Selenium
     class VgMatchWindowData < Applitools::MatchWindowData
+      CONVERT_COORDINATES = proc do |region, selector_regions|
+        begin
+          offset_region = selector_regions.last
+          new_location = region.location.offset_negative(Applitools::Location.new(offset_region['x'].to_i, offset_region['y'].to_i))
+          region.location = new_location
+        rescue
+          Applitools::EyesLogger.error("Failed to convert coordinates for #{region}")
+        end
+      end
       class RegionCoordinatesError < ::Applitools::EyesError
         attr_accessor :region
         def initialize(region, message)
@@ -109,7 +118,11 @@ module Applitools
             region = selector_regions[target.regions[region]]
             raise RegionCoordinatesError.new(r, region['error']) if region['error']
             retrieved_region = Applitools::Region.new(region['x'], region['y'], region['width'], region['height'])
-            result_region = r.padding_proc.call(retrieved_region) if r.padding_proc.is_a? Proc
+            result_region = if r.padding_proc.is_a? Proc
+              r.padding_proc.call(retrieved_region)
+            else
+              retrieved_region
+            end
             result << result_region
           end
         end
@@ -118,36 +131,54 @@ module Applitools
 
       def convert_ignored_regions_coordinates
         return unless @need_convert_ignored_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @ignored_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.ignored_regions = @ignored_regions.map(&:with_padding).map(&:to_hash)
         @need_convert_ignored_regions_coordinates = false
       end
 
       def convert_floating_regions_coordinates
         return unless @need_convert_floating_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @floating_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.floating_regions = @floating_regions
         @need_convert_floating_regions_coordinates = false
       end
 
       def convert_layout_regions_coordinates
         return unless @need_convert_layout_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @layout_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.layout_regions = @layout_regions
         @need_convert_layout_regions_coordinates = false
       end
 
       def convert_strict_regions_coordinates
         return unless @need_convert_strict_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @strict_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.strict_regions = @strict_regions
         @need_convert_strict_regions_coordinates = false
       end
 
       def convert_content_regions_coordinates
         return unless @need_convert_content_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @content_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.content_regions = @content_regions
         @need_convert_content_regions_coordinates = false
       end
 
       def convert_accessibility_regions_coordinates
         return unless @need_convert_accessibility_regions_coordinates
+        if target.convert_coordinates_block.is_a?(Proc)
+          @accessibility_regions.each { |r| target.convert_coordinates_block.call(r, selector_regions)}
+        end
         self.accessibility_regions = @accessibility_regions
         @need_convert_accessibility_regions_coordinates = false
       end

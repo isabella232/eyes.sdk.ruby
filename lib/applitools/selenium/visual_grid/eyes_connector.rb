@@ -54,7 +54,6 @@ module Applitools
           logger.error "Error retrieving coordinates for region #{e.region}"
           logger.error e.message
         end
-
         check_result = check_window_base(
           dummy_region_provider, timeout, match_data
         )

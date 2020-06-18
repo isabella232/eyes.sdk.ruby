@@ -21,7 +21,7 @@ module Applitools
 
       attr_accessor :element, :frames, :region_to_check, :coordinate_type, :options, :ignored_regions,
         :floating_regions, :frame_or_element, :regions, :layout_regions, :content_regions,
-        :strict_regions, :accessibility_regions
+        :strict_regions, :accessibility_regions, :convert_coordinates_block
 
       private :frame_or_element, :frame_or_element=
 
@@ -33,6 +33,7 @@ module Applitools
           script_hooks: { beforeCaptureScreenshot: '' }
         }
         self.regions = {}
+        self.convert_coordinates_block = nil
         reset_for_fullscreen
       end
 
@@ -372,6 +373,10 @@ module Applitools
           end
         end
         nil
+      end
+
+      def convert_coordinates(&block)
+        self.convert_coordinates_block = block
       end
 
       private
