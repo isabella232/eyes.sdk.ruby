@@ -24,7 +24,7 @@ module Applitools
       config_keys.each do |k|
         new_config.send(
           "#{k}=", case value = send(k)
-                   when Symbol, FalseClass, TrueClass, Integer, Float
+                   when Symbol, FalseClass, TrueClass, Integer, Float, NilClass
                      value
                    else
                      value.clone

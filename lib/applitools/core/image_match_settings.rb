@@ -39,7 +39,7 @@ module Applitools
       cloned_value = self.class.new
       self.class.json_methods.keys.each do |f|
         new_value = case (v = send(f))
-                    when Symbol, FalseClass, TrueClass, Integer, Float
+                    when Symbol, FalseClass, TrueClass, Integer, Float, NilClass
                       v
                     else
                       v.clone

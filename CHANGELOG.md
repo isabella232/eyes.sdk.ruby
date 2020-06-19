@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.17.8] - 2020-06-19
+## Fixed
+- Call :clone on a NilClass for ruby 2.3 [Trello_1855](https://trello.com/c/LCBhnTMd/1885-selenium-ruby-cant-clone-nilclass)
 ## [Eyes.sdk.ruby 3.17.7] - 2020-06-18
 ## Added
 - eyes.ignore_displacements= and eyes.ignore_displacements methods [Trello_841](https://trello.com/c/uwrYb1Vj/841-add-a-general-method-for-ignoredisplacements?menu=filter&filter=visual%20loca,due:notdue)
