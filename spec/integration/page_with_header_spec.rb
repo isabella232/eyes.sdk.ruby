@@ -9,11 +9,11 @@ RSpec.describe 'page with header', report_me: true do
     include_examples 'Eyes Selenium SDK - Page With Header'
   end
 
-  context 'Eyes Selenium SDK - Page With Header (Scroll)', selenium: true, scroll: true do
+  context 'Eyes Selenium SDK - Page With Header', selenium: true, scroll: true do
     include_examples 'Eyes Selenium SDK - Page With Header'
   end
 
-  context 'Eyes Selenium SDK - Page With Header (VG)', visual_grid: true do
+  context 'Eyes Selenium SDK - Page With Header', visual_grid: true do
     include_examples 'Eyes Selenium SDK - Page With Header'
   end
 end
