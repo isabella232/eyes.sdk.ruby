@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.17.10] - 2020-06-20
+## Fixed
+- a configuration shared between Eyes instances in Rspec [Trello_1938](https://trello.com/c/qOQkbDO7/1938-a-configuration-shared-between-eyes-instances-in-rspec)
 ## [Eyes.sdk.ruby 3.17.9] - 2020-06-19
 ## Fixed
 - Call :clone on a NilClass for ruby 2.3 [Trello_1855](https://trello.com/c/LCBhnTMd/1885-selenium-ruby-cant-clone-nilclass)

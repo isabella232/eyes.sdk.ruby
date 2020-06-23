@@ -14,7 +14,11 @@ module Applitools
       if self.class.respond_to? :default_config
         default_config = self.class.default_config
         default_config.keys.each do |k|
-          send "#{k}=", default_config[k] unless default_config[k].nil?
+          unless default_config[k].nil?
+            send "#{k}=", default_config[k].deep_clone if default_config[k].respond_to?(:deep_clone)
+            send "#{k}=", default_config[k].clone if default_config[k].respond_to?(:clone)
+            send "#{k}=", default_config[k].clone unless default_config[k].respond_to?(:clone) || default_config[k].respond_to?(:deep_clone)
+          end
         end
       end
     end

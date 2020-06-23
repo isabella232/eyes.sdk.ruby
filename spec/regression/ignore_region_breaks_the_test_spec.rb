@@ -7,7 +7,7 @@ RSpec.describe 'Ignore region coordinates break the test' do
   let(:web_driver) { Selenium::WebDriver.for :chrome }
   let(:eyes) do
     Applitools::Selenium::Eyes.new.tap do |e|
-      e.log_handler = Logger.new(STDOUT)
+      e.log_handler = Logger.new(STDOUT) unless ENV['TRAVIS']
     end
   end
   let(:driver) do

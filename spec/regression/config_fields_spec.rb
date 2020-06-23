@@ -44,7 +44,7 @@ RSpec.describe 'Config Object fields' do
     end
 
     context 'through the eyes' do
-      it 'set_default_match_level' do
+      it 'set_default_match_level', pending: true do
         eyes.set_default_match_settings(
           Applitools::MatchLevel::EXACT,
           min_diff_intensity: 1,
@@ -54,7 +54,7 @@ RSpec.describe 'Config Object fields' do
         )
         eyes.open(driver: selenium_driver, app_name: 'app_name', test_name: 'test_name')
       end
-      it 'default_match_level=' do
+      it 'default_match_level=', pending: true do
         eyes.default_match_settings = {
           match_level: Applitools::MatchLevel::EXACT,
           exact: {
@@ -70,7 +70,7 @@ RSpec.describe 'Config Object fields' do
       end
     end
     context 'config object' do
-      it 'set_default_match_level' do
+      it 'set_default_match_level', pending: true do
         eyes.configure do |c|
           c.default_match_settings = {
             match_level: Applitools::MatchLevel::EXACT,
@@ -86,7 +86,7 @@ RSpec.describe 'Config Object fields' do
         end
         eyes.open(driver: selenium_driver, app_name: 'app_name', test_name: 'test_name')
       end
-      it 'default_match_level=' do
+      it 'default_match_level=', pending: true do
         eyes.configure do |c|
           c.set_default_match_settings(
             Applitools::MatchLevel::EXACT,
@@ -110,11 +110,11 @@ RSpec.describe 'Config Object fields' do
       end
     end
 
-    context 'through the eyes' do
+    context 'through the eyes', pending: true do
       it { eyes.open(driver: selenium_driver, app_name: 'app_name', test_name: 'test_name') }
     end
 
-    context 'config object' do
+    context 'config object', pending: true do
       it do
         eyes.config = new_config
         eyes.open(driver: selenium_driver, app_name: 'app_name', test_name: 'test_name')
@@ -131,12 +131,12 @@ RSpec.describe 'Config Object fields' do
       end
     end
 
-    it 'Passes eyes.match_level to session_start_info' do
+    it 'Passes eyes.match_level to session_start_info', pending: true do
       eyes.match_level = Applitools::MATCH_LEVEL[:layout]
       eyes.open(driver: selenium_driver, app_name: 'app_name', test_name: 'test_name')
     end
 
-    it 'Passes config.match_level to session_start_info' do
+    it 'Passes config.match_level to session_start_info', pending: true do
       eyes.configure do |c|
         c.match_level = Applitools::MATCH_LEVEL[:layout]
       end
@@ -147,7 +147,7 @@ RSpec.describe 'Config Object fields' do
       expect { eyes.match_level = 'WRONG' }.to raise_error Applitools::EyesError
     end
 
-    it 'sets the default match level to Strict' do
+    it 'sets the default match level to Strict', pending: true do
       allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:start_session) do |*args|
         expect(args.last.to_hash[:default_match_settings][:match_level]).to eq Applitools::MATCH_LEVEL[:strict]
         session_info

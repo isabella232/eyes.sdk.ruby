@@ -58,6 +58,18 @@ module Applitools
       self.accessibility_settings = value
     end
 
+    def ==(other)
+      return true if other.object_id == object_id
+      result = true
+      self.class.json_methods.keys.each do |f|
+        result = send(f) == other.send(f)
+        break unless result
+      end
+      result
+    end
+
+    alias deep_clone deep_dup
+
     class Exact
       include Applitools::Jsonable
       json_fields :MinDiffIntensity, :MinDiffWidth, :MinDiffHeight, :MatchThreshold

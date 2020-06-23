@@ -61,6 +61,22 @@ unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
     sh('bundle exec parallel_rspec -n 1 -- --tag visual_grid -- spec/integration/*_spec.rb')
   end
 
+  namespace :unit_tests do
+    RSpec::Core::RakeTask.new(:core) do |t|
+      t.pattern = 'spec/core'
+    end
+
+    RSpec::Core::RakeTask.new(:visual_grid) do |t|
+      t.pattern = 'spec/visual_grid'
+    end
+
+    RSpec::Core::RakeTask.new(:regression) do |t|
+      t.pattern = 'spec/regression'
+    end
+
+    task :travis => [:regression, :core, :visual_grid]
+  end
+
 
   # case ENV['END_TO_END_TESTS']
   # when 'false'

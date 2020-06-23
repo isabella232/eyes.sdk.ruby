@@ -68,7 +68,7 @@ module Applitools
       @need_convert_content_regions_coordinates = false
       @need_convert_layout_regions_coordinates = false
       @need_convert_accessibility_regions_coordinates = false
-      self.default_image_match_settings = default_image_match_settings.deep_dup || Applitools::ImageMatchSettings.new
+      self.default_image_match_settings = default_image_match_settings.nil? ? Applitools::ImageMatchSettings.new : default_image_match_settings.deep_dup
     end
 
     def screenshot

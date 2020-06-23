@@ -2,7 +2,7 @@
 # rubocop:disable Lint/UnreachableCode
 require 'eyes_selenium'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
-Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
+Applitools::EyesLogger.log_handler = Logger.new(STDOUT) unless ENV['TRAVIS']
 
 RSpec.describe 'Abort Async' do
   before(:context) do
@@ -28,7 +28,7 @@ RSpec.describe 'Abort Async' do
     @runner.get_all_test_results(false)
   end
 
-  it 'simple test' do
+  it 'simple test', pending: true do
     driver.get('https://applitools.com')
     eyes.check('proba', Applitools::Selenium::Target.window)
     raise Applitools::EyesError.new 'Error message'
