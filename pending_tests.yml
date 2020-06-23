@@ -31,7 +31,7 @@ Selenium Fluent API:
   - TestCheckFullWindowWithMultipleIgnoreRegionsBySelector_Fluent_Scroll
   - TestIgnoreDisplacements
   - TestIgnoreDisplacements_Scroll
-  - TestCheckElementWithIgnoreRegionBySameElement_Fluent_Scroll
+#  - TestCheckElementWithIgnoreRegionBySameElement_Fluent_Scroll
 Classic API:
   - TestCheckInnerFrame
 #  - TestCheckWindowAfterScroll_Scroll
