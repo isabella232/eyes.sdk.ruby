@@ -1,6 +1,6 @@
-Accessibility:
-  - TestAccessibilityRegions
-  - TestAccessibilityRegions_VG
+#Accessibility:
+#  - TestAccessibilityRegions
+#  - TestAccessibilityRegions_VG
 #page with header:
 #  - TestCheckPageWithHeader_Region_Fully_Scroll
 #  - TestCheckPageWithHeader_Region_Scroll
