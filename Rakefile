@@ -86,7 +86,11 @@ unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
       t.pattern = 'spec/calabash'
     end
 
-    task :travis => [:regression, :bugfix, :core, :selenium, :visual_grid, :calabash]
+    RSpec::Core::RakeTask.new(:images) do |t|
+      t.pattern = 'spec/images'
+    end
+
+    task :travis => [:regression, :bugfix, :core, :selenium, :visual_grid, :calabash, :images]
   end
 
 
