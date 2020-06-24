@@ -6,7 +6,7 @@ RSpec.describe Applitools::Selenium::DomCapture do
   let(:logger) { Logger.new(STDOUT) }
   let(:error) { Selenium::WebDriver::Error::NoSuchElementError }
   before do
-    Applitools::EyesLogger.log_handler = logger
+    Applitools::EyesLogger.log_handler = logger unless ENV['TRAVIS']
   end
   it 'dom_capture handles error' do
     allow(error.class).to receive(:dump).and_raise(Applitools::EyesError, 'undefined method :dump')

@@ -2,7 +2,7 @@
 require 'rspec'
 require 'eyes_selenium'
 
-RSpec.describe 'Chrome 78 bug', pending: true do
+RSpec.describe 'Chrome 78 bug' do
   let(:eyes) do
     Applitools::Selenium::Eyes.new.tap do |e|
       e.stitch_mode = :CSS
