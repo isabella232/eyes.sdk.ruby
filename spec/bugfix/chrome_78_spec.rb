@@ -2,11 +2,11 @@
 require 'rspec'
 require 'eyes_selenium'
 
-RSpec.describe 'Chrome 78 bug' do
+RSpec.describe 'Chrome 78 bug', pending: true do
   let(:eyes) do
     Applitools::Selenium::Eyes.new.tap do |e|
       e.stitch_mode = :CSS
-      e.log_handler = Logger.new(STDOUT)
+      e.log_handler = Logger.new(STDOUT) unless ENV['TRAVIS']
     end
   end
   let(:original_driver) { Selenium::WebDriver.for :chrome }

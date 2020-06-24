@@ -4,7 +4,6 @@ require 'eyes_selenium'
 RSpec.describe Applitools::ImageMatchSettings do
   it 'default value' do
     expect(subject.json_data).to include(
-      accessibilityLevel: 'None',
       MatchLevel: 'Strict',
       SplitTopHeight: 0,
       SplitBottomHeight: 0,
@@ -116,8 +115,8 @@ RSpec.describe Applitools::Selenium::Configuration do
   it_should_behave_like(
     'pass property to image match settings',
     :accessibility_validation,
-    Applitools::AccessibilityLevel::AAA,
-    :accessibility_level
+    Applitools::AccessibilitySettings.new(Applitools::AccessibilityLevel::AA, Applitools::AccessibilityGuidelinesVersion::WCAG_2_0),
+    :accessibility_settings
   )
   it_should_behave_like(
     'pass property to image match settings',
