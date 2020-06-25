@@ -57,7 +57,13 @@ module Applitools
         self
       end
 
-      def add_browsers(browsers)
+      def add_browsers(*browsers)
+        browsers = case browsers.first
+                     when Applitools::Selenium::IRenderBrowserInfo
+                       browsers
+                     when Array
+                       browsers.first
+                   end
         browsers.each do |browser|
           add_browser(browser)
         end

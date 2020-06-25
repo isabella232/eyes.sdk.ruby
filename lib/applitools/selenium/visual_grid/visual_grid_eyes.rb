@@ -63,7 +63,7 @@ module Applitools
         config.test_name = options[:test_name] if config.test_name.nil? || config.test_name && config.test_name.empty?
 
         if config.viewport_size.nil? || config.viewport_size && config.viewport_size.empty?
-          config.viewport_size = Applitools::RectangleSize.from_any_argument(options[:viewport_size])
+          config.viewport_size = Applitools::RectangleSize.from_any_argument(options[:viewport_size]) if options[:viewport_size]
         end
 
         self.driver = Applitools::Selenium::SeleniumEyes.eyes_driver(options.delete(:driver), self)

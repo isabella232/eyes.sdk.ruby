@@ -1,12 +1,12 @@
 require_relative 'ios_device_name'
-require_relative 'ios_screen_orientation'
+
 module Applitools
   module Selenium
     class IosDeviceInfo < IRenderBrowserInfo
       DEFAULT_CONFIG = proc do
         {
             platform: 'ios',
-            browser_type: BrowserTypes::IOS_SAFARI,
+            browser_type: BrowserType::IOS_SAFARI,
             # size_mode: 'full-page',
             viewport_size: Applitools::RectangleSize.from_any_argument(width: 0, height: 0)
         }
@@ -24,7 +24,7 @@ module Applitools
         super
         self.ios_device_info = EmulationInfo.new.tap do |ei|
           ei.device_name = options[:device_name]
-          ei.screen_orientation = options[:screen_orientation] || options[:orientation] || IosScreenOrientation::PORTRAIT
+          ei.screen_orientation = options[:screen_orientation] || options[:orientation] || Orientation::PORTRAIT
         end
       end
 
@@ -40,7 +40,7 @@ module Applitools
 
       class EmulationInfo < EmulationBaseInfo
         enum_field :device_name, IosDeviceName.enum_values
-        enum_field :screen_orientation, IosScreenOrientation.enum_values
+        enum_field :screen_orientation, Orientation.enum_values
 
         def json_data
           {

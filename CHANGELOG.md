@@ -1,3 +1,6 @@
+## [Eyes.sdk.ruby 3.17.11] - 2020-06-25
+## Fixed
+- IosDeviceOrientation is replaced by Orientation [Trello_1944](https://trello.com/c/EzyG7525/1944-ufg-safari-on-ios-orientations-changes)
 ## [Eyes.sdk.ruby 3.17.10] - 2020-06-20
 ## Fixed
 - a configuration shared between Eyes instances in Rspec [Trello_1938](https://trello.com/c/qOQkbDO7/1938-a-configuration-shared-between-eyes-instances-in-rspec)
