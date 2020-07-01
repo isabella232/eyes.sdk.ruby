@@ -12,6 +12,7 @@ branches:
   only:
     - master
     - develop
+    - /^v[0-9]+\.[0-9]+.[0-9]+$/
 before_install:
   - gem install builder
   - BUILD_ONLY=true rake clean build
@@ -20,6 +21,18 @@ before_script:
   - export APPLITOOLS_BATCH_ID=$(java UUIDFromString $TRAVIS_COMMIT$TRAVIS_RUBY_VERSION)
   - echo $APPLITOOLS_BATCH_ID
   - export APPLITOOLS_DONT_CLOSE_BATCHES=true
+  - echo $TRAVIS_TAG
+  - if [[ ($TRAVIS_TAG =~ ^v[0-9]+\.[0-9]+\.[0-9]+$) || ($TRAVIS_TAG =~ ^RELEASE_CANDIDATE) ]]; then
+      export TEST_REPORT_SANDBOX=False;
+      export SDK_VERSION=$(echo $TRAVIS_TAG | sed 's/[^.0-9]*//g');
+      export TMP_CHANGELOG=$(bash ./extractChangeLog.sh "$SDK_VERSION" "CHANGELOG.md");
+      export CHANGELOG=$([ -z "$TMP_CHANGELOG" ] && echo "There is no change log for version $SDK_VERSION"; echo "$TMP_CHANGELOG");
+
+      if [[ (-z "$TMP_CHANGELOG") ]]; then
+        echo "THE CHANGELOG IS NOT CORRECT";
+        exit 1;
+      fi
+    fi
 jobs:
   include:
     - stage: "Unit Tests"
@@ -30,3 +43,19 @@ jobs:
       script: bundle exec rake travis_selenium
     - script: bundle exec rake travis_vg
       name: "Visual Grid"
+    - stage: "Build"
+      if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ AND fork == false
+      name: "Release event"
+      script:
+        - echo "v$SDK_VERSION $CHANGELOG"
+        - echo $TMP_CHANGELOG
+        - COMMITTER_EMAIL="$(git log -1 $TRAVIS_COMMIT --pretty="%cE")"
+        - if [[ ("$ALLOWED_RELEASE_COMMITERS" =~ .*"$COMMITTER_EMAIL".*) && $TMP_CHANGELOG ]]; then
+            echo "DEPLOY";
+            TEST_COVERAGE_GAP=$(cat testCoverageGap.txt);
+            bash ./sendMail.sh "$SDK" "$TRAVIS_TAG" "$CHANGELOG" "$TEST_COVERAGE_GAP";
+            echo "DEPLOY SUCCESSFUL";
+          else
+            echo "DEPLOYMENT FAILED";
+            exit 1;
+          fi

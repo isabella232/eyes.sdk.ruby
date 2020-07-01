@@ -26,7 +26,7 @@ RSpec.configure do |config|
         sdk: 'ruby',
         group: example_group.test_reporting_group,
         id: ENV['TRAVIS_COMMIT'] || (example_group.respond_to?(:test_reporting_id) && example_group.test_reporting_id),
-        sandbox: true
+        sandbox: ENV['TEST_REPORT_SANDBOX'] != 'False'
       )
       @report_connection = Faraday.new(
         Applitools::TestUtils::TEST_REPORT_SERVER_URL,
