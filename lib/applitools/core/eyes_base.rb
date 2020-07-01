@@ -312,6 +312,10 @@ module Applitools
         " #{retry_timeout})"
       )
 
+      app_env = app_environment
+
+      logger.info "Application environment is #{app_env}"
+
       tag = '' if tag.nil?
 
       self.session_start_info = SessionStartInfo.new agent_id: base_agent_id, app_id_or_name: app_name,

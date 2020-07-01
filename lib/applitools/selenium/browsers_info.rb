@@ -17,7 +17,7 @@ module Applitools
         return unless viewport_size
         default = Applitools::Selenium::DesktopBrowserInfo.new.tap do |bi|
           bi.viewport_size = viewport_size
-          bi.browser_type = BrowserTypes::CHROME
+          bi.browser_type = BrowserType::CHROME
         end
         yield(default)
       end

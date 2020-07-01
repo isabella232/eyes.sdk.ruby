@@ -86,7 +86,7 @@ RSpec.describe Applitools::Images::Eyes, mock_connection: true do
         .and_return(Applitools::TestResults.new(:key => :value))
     end
 
-    xit 'wraps code with open_and_close' do
+    it 'wraps code with open_and_close' do
       expect(subject).to receive('open_and_close').and_call_original
       subject.check_single('test', target, app_name: 'app_name', test_name: 'test_name')
     end
@@ -96,7 +96,7 @@ RSpec.describe Applitools::Images::Eyes, mock_connection: true do
       subject.check_single('', target, app_name: 'app_name', test_name: 'test_name')
     end
 
-    xit 'performs \':read_target\' for match_data' do
+    it 'performs \':read_target\' for match_data' do
       expect_any_instance_of(Applitools::MatchWindowData).to receive(:read_target)
       subject.check_single('', target, app_name: 'app_name', test_name: 'test_name')
     end
@@ -112,12 +112,12 @@ RSpec.describe Applitools::Images::Eyes, mock_connection: true do
       end
     end
 
-    xit 'calls check_single_base' do
+    it 'calls check_single_base' do
       expect(subject).to receive('check_single_base').and_call_original
       subject.check_single('', target, app_name: 'app_name', test_name: 'test_name')
     end
 
-    xit 'returns match_result' do
+    it 'returns match_result' do
       expect(subject.check_single('', target, app_name: 'app_name', test_name: 'test_name')).to match(:key => :value)
     end
   end

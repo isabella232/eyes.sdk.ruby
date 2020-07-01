@@ -20,14 +20,22 @@ module Applitools
 
       def with_floating_regions(&block)
         @chain.push proc { block.call(floating_regions) }
+        self
       end
 
       def with_ignore_regions(&block)
         @chain.push proc { block.call(ignore_regions) }
+        self
+      end
+
+      def with_properties(&block)
+        @chain.push proc { block.call(properties) }
+        self
       end
 
       def with_accessibility_regions(&block)
         @chain.push proc { block.call(accessibility_regions) }
+        self
       end
 
       def perform
@@ -60,6 +68,11 @@ module Applitools
             r['type']
           )
         end
+      end
+
+      def properties
+        puts 'JOPA2222222'
+        @actual_properties ||= nil
       end
 
       def image_match_settings

@@ -25,7 +25,8 @@ RSpec.shared_context 'selenium workaround' do
     eyes.stitch_mode = Applitools::Selenium::StitchModes::CSS
     eyes.force_full_page_screenshot = true if example.metadata[:fps]
     eyes.stitch_mode = Applitools::Selenium::StitchModes::SCROLL if example.metadata[:scroll]
-    eyes.branch_name = 'master'
+    eyes.branch_name = 'master_ruby'
+    eyes.parent_branch_name = 'master'
     # eyes.proxy = Applitools::Connectivity::Proxy.new('http://localhost:8000')
     driver.get(url_for_test)
   end
@@ -46,7 +47,11 @@ RSpec.shared_context 'selenium workaround' do
         if @actual_app_output_check.empty?
           eyes.close_async
         else
-          @eyes_test_result = eyes.close
+          begin
+            @eyes_test_result = eyes.close
+          rescue Applitools::DiffsFoundError
+            nil
+          end
           @actual_app_output_check.each do |check|
             check.perform
           end
