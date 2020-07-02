@@ -2,7 +2,6 @@
 
 [![Gem Version](https://badge.fury.io/rb/eyes_selenium.svg)](http://badge.fury.io/rb/eyes_selenium)
 [![Build Status](https://travis-ci.org/applitools/Eyes.Selenium.Ruby.svg)](https://travis-ci.org/applitools/Eyes.Selenium.Ruby)
-[![Dependency Status](https://gemnasium.com/applitools/Eyes.Selenium.Ruby.svg)](https://gemnasium.com/applitools/Eyes.Selenium.Ruby)
 
 Applitools Ruby SDK.
 
