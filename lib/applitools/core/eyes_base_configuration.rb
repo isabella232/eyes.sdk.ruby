@@ -11,6 +11,8 @@ require 'applitools/core/image_match_settings'
 
 module Applitools
   class EyesBaseConfiguration < AbstractConfiguration
+    DEFAULT_MATCH_TIMEOUT = 2 # seconds
+
     DEFAULT_CONFIG = {
       branch_name: ENV['APPLITOOLS_BRANCH'],
       parent_branch_name: ENV['APPLITOOLS_PARENT_BRANCH'],
@@ -22,7 +24,8 @@ module Applitools
       save_new_tests: true,
       default_match_settings: Applitools::ImageMatchSettings.new,
       accessibility_validation: nil,
-      properties: []
+      properties: [],
+      match_timeout: DEFAULT_MATCH_TIMEOUT
     }.freeze
 
     class << self
@@ -114,6 +117,7 @@ module Applitools
     boolean_field :ignore_displacements
     object_field :accessibility_validation, Applitools::AccessibilitySettings, true
     object_field :properties, Array
+    int_field :match_timeout
 
     methods_to_delegate.delete(:batch_info)
     methods_to_delegate.delete(:batch_info=)

@@ -14,4 +14,22 @@ RSpec.describe Applitools::EyesBaseConfiguration do
       expect(subject.default_match_settings.ignore_displacements).to be false
     end
   end
+
+  context 'match_timeout' do
+    it 'provides methods' do
+      expect(subject).to respond_to(:match_timeout)
+      expect(subject).to respond_to(:match_timeout=)
+    end
+
+    it 'default value' do
+      expect(subject.match_timeout).to eq Applitools::EyesBaseConfiguration::DEFAULT_MATCH_TIMEOUT
+    end
+
+    it 'sets value' do
+      subject.match_timeout = 5342
+      expect(subject.match_timeout).to eq(5342)
+      subject.match_timeout = 0
+      expect(subject.match_timeout).to eq(0)
+    end
+  end
 end

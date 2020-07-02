@@ -1,3 +1,6 @@
+## [3.17.12] - 2020-07-02
+## Fixed
+- :match_timeout property is moved to configuration object [Trello_1935](https://trello.com/c/2Z070Qgs/1935-ruby-selenium-matchtimeout-not-available-in-the-configuration-object)
 ## [3.17.11] - 2020-06-25
 ## Fixed
 - IosDeviceOrientation is replaced by Orientation [Trello_1944](https://trello.com/c/EzyG7525/1944-ufg-safari-on-ios-orientations-changes)

@@ -92,7 +92,7 @@ describe Applitools::EyesBase, mock_connection: true do
     expect(subject.send(:agent_id)).to be_nil
     expect(subject.send(:save_new_tests)).to eq true
     expect(subject.send(:save_failed_tests)).to eq false
-    expect(subject.send(:match_timeout)).to eq Applitools::EyesBase::DEFAULT_MATCH_TIMEOUT
+    expect(subject.send(:match_timeout)).to eq Applitools::EyesBaseConfiguration::DEFAULT_MATCH_TIMEOUT
   end
 
   context ':set_default_settings', pending: true do

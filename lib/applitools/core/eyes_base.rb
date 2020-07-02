@@ -23,7 +23,6 @@ module Applitools
     extend Forwardable
     extend Applitools::Helpers
 
-    DEFAULT_MATCH_TIMEOUT = 2 # seconds
     USE_DEFAULT_TIMEOUT = -1
 
     SCREENSHOT_AS_IS = Applitools::EyesScreenshot::COORDINATE_TYPES[:screenshot_as_is].freeze
@@ -73,7 +72,6 @@ module Applitools
       self.server_url = server_url if server_url
       self.disabled = false
       @viewport_size = nil
-      self.match_timeout = DEFAULT_MATCH_TIMEOUT
       self.running_session = nil
       self.save_new_tests = true
       self.save_failed_tests = false
