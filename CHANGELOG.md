@@ -1,3 +1,7 @@
+## [3.17.13] - 2020-07-03
+## Fixed
+- eyes_appium: Coded Floating Regions Incorrectly Placed [Trello_1960](https://trello.com/c/j6nJh1LS/1960-ruby-native-app-coded-floating-regions-incorrectly-placed)
+- eyes_images: Simple eyes_images test is broken [Trello_1949](https://trello.com/c/dHQbz96i/1949-eyesimages-seem-to-be-broken)
 ## [3.17.12] - 2020-07-02
 ## Fixed
 - :match_timeout property is moved to configuration object [Trello_1935](https://trello.com/c/2Z070Qgs/1935-ruby-selenium-matchtimeout-not-available-in-the-configuration-object)

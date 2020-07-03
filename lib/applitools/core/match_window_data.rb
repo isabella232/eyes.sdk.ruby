@@ -376,12 +376,12 @@ module Applitools
             Applitools::EyesScreenshot::COORDINATE_TYPES[:context_relative],
             Applitools::EyesScreenshot::COORDINATE_TYPES[:screenshot_as_is]
           )
-          updated_region.to_hash
+
           Applitools::FloatingRegion.new(
             updated_region.left,
             updated_region.top,
-            r.width,
-            r.height,
+            updated_region.width,
+            updated_region.height,
             r.max_left_offset,
             r.max_top_offset,
             r.max_right_offset,

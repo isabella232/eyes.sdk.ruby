@@ -63,7 +63,7 @@ RSpec.describe Applitools::MatchWindowData do
         'Title' => 'Title_11',
         'IsPrimary' => 'IsPrimary_11',
         'Elapsed' => 'Elapsed_11',
-'Location' => { X: 35, y: 46 }
+        'Location' => { X: 35, y: 46 }
       }
     end
 
@@ -220,6 +220,8 @@ RSpec.describe Applitools::MatchWindowData do
     end
     context 'floating regions' do
       let(:f_region) { Applitools::FloatingRegion.new 0, 0, 0, 0, 0, 0, 0, 0 }
+      let(:f_region_to_scale) { Applitools::FloatingRegion.new(10,10, 100, 200, 5, 5, 5, 5) }
+      let(:f_region_scaled) { Applitools::FloatingRegion.new(10,10, 50, 100, 5, 5, 5, 5) }
       before do
         allow(target).to receive(:floating_regions).and_return [proc { f_region }, f_region]
       end
@@ -235,10 +237,16 @@ RSpec.describe Applitools::MatchWindowData do
         subject.read_target(target, nil)
         expect(subject.instance_variable_get(:@need_convert_floating_regions_coordinates)).to be true
       end
+
+      # it 'converts coordinates' do
+      #   allow(target).to receive(:floating_regions).and_return [f_region_to_scale]
+      #   subject.read_target(target, nil)
+      #   expect(subject.instance_variable_get(:@floating_regions).first).to eq(f_region_scaled)
+      # end
     end
 
     context 'convert floating regions locations' do
-      let(:f_region) { Applitools::FloatingRegion.new 10, 15, 20, 30, 40, 50, 60, 70 }
+      let(:f_region) { Applitools::FloatingRegion.new 10, 15, 40, 60, 40, 50, 60, 70 }
       let(:the_app_output) do
         instance_double(Applitools::AppOutputWithScreenshot).tap do |o|
           allow(o).to receive(:screenshot).and_return(the_screenshot)
@@ -268,6 +276,10 @@ RSpec.describe Applitools::MatchWindowData do
         subject.read_target(target, nil)
         expect(subject).to receive(:floating_regions=) do |value|
           value.each do |r|
+            expect(r.left).to be 110
+            expect(r.top).to be 115
+            expect(r.width).to be 20
+            expect(r.height).to be 30
             expect(r.max_left_offset).to be 40
             expect(r.max_top_offset).to be 50
             expect(r.max_right_offset).to be 60
