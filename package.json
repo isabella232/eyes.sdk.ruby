@@ -18,7 +18,7 @@
     "ruby:prod": "yarn && yarn docker:start && yarn ruby:test:prod",
     "ruby:ci": "yarn && bundle install && yarn ruby",
     "ruby:test": "yarn ruby:create && yarn ruby:run:parallel && yarn ruby:report:merge && yarn ruby:report:sandbox",
-    "ruby:test:prod": "yarn ruby:create && yarn ruby:run:parallel && yarn ruby:report:merge && yarn ruby:report",
+    "ruby:test:prod": "[\"TRAVIS_ENV_TYPE\" = \"cron\"] && yarn ruby:create:noskip || yarn ruby:create && yarn ruby:run:parallel && yarn ruby:report:merge && yarn ruby:report",
     "ruby:create": "mkdir -p ./coverage_tests/spec/coverage/generic && cd coverage_tests && coverage-tests create-tests --path ./configuration",
     "ruby:create:noskip": "mkdir -p ./coverage_tests/spec/coverage/generic && cd coverage_tests && coverage-tests create-tests --path ./configuration -a",
     "ruby:report": "[ \"$TEST_REPORT_SANDBOX\" = \"False\" ] && yarn ruby:report:prod || yarn ruby:report:sandbox ",

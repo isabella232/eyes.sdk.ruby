@@ -40,14 +40,31 @@ jobs:
     - stage: "Unit Tests"
       name: "Unit Tests"
       script: bundle exec rake unit_tests:travis
-    - stage: "Visual tests"
-      name: "Classic Selenium"
-      script: bundle exec rake travis_selenium
-    - script: bundle exec rake travis_vg
-      name: "Visual Grid"
+#    - stage: "Visual tests"
+#      name: "Classic Selenium"
+#      script: bundle exec rake travis_selenium
+#    - script: bundle exec rake travis_vg
+#      name: "Visual Grid"
     - stage: "Ruby Coverage tests"
       name: "Ruby Coverage tests"
       script: yarn ruby:prod
+    - stage: "Report all test results"
+      if: branch = master
+      env: TRAVIS_ENV_TYPE=cron
+      name: "Report all test results"
+      script:
+        - echo "v$SDK_VERSION $CHANGELOG"
+        - echo $TMP_CHANGELOG
+        - COMMITTER_EMAIL="$(git log -1 $TRAVIS_COMMIT --pretty="%cE")"
+        - if [[ ("$ALLOWED_RELEASE_COMMITERS" =~ .*"$COMMITTER_EMAIL".*) && $TMP_CHANGELOG ]]; then
+            echo "REPORTING...";
+            TEST_COVERAGE_GAP=$(cat testCoverageGap.txt);
+            bash ./all_tests_report.sh "$SDK" "$COMMITER_EMAIL";
+            echo "REPORTED SUCCESSFULLY";
+          else
+            echo "REPORT FAILED";
+            exit 1;
+          fi
     - stage: "Build"
       if: tag =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ AND fork == false
       name: "Release event"
