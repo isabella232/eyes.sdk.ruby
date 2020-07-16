@@ -50,7 +50,6 @@ jobs:
       script: yarn ruby:prod
     - stage: "Report all test results"
       if: branch = master
-      env: TRAVIS_ENV_TYPE=cron
       name: "Report all test results"
       script:
         - echo "v$SDK_VERSION $CHANGELOG"
