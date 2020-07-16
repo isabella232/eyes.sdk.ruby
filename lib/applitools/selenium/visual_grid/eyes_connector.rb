@@ -97,6 +97,10 @@ module Applitools
         render_status['selectorRegions']
       end
 
+      def visual_viewport
+        render_status['visualViewport']
+      end
+
       # def match_level_keys
       #   %w(match_level exact scale remainder ).map(&:to_sym)
       # end
@@ -146,6 +150,7 @@ module Applitools
             o.location = region.location unless region.empty?
             o.dom_url = dom_url
             o.screenshot_url = screenshot_url if respond_to?(:screenshot_url) && !screenshot_url.nil?
+            o.visual_viewport = visual_viewport unless visual_viewport.nil?
           end,
           nil,
           true

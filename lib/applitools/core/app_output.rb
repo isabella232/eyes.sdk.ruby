@@ -4,7 +4,7 @@ module Applitools
   class AppOutput
     attr_reader :title, :screenshot64, :location
 
-    attr_accessor :dom_url, :screenshot_url
+    attr_accessor :dom_url, :screenshot_url, :visual_viewport
 
     def initialize(title, screenshot64)
       @title = title
@@ -25,6 +25,7 @@ module Applitools
         ScreenshotUrl: screenshot_url
       }
       result[:DomUrl] = dom_url if dom_url
+      result[:visualViewport] = visual_viewport if visual_viewport
       result
     end
   end

@@ -1,3 +1,6 @@
+## [3.17.15] - 2020-07-16
+### Added
+- Added `VisualViewport` for UFG client. [Trello 1957](https://trello.com/c/jWvdBwex/1957-add-visual-viewport-support-in-the-ui-for-mobile-devices)
 ## [3.17.14] - 2020-07-9
 ### Updated
 - Added missing `StitchingService` URI field in `RenderRequest`. [Trello 1988](https://trello.com/c/Yr6EsUlL)
