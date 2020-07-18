@@ -59,8 +59,8 @@ module Applitools
         options = Applitools::Utils.extract_options!(args)
         Applitools::ArgumentGuard.hash(options, 'options', [:driver])
 
-        config.app_name = options[:app_name] if config.app_name.nil? || config.app_name && config.app_name.empty?
-        config.test_name = options[:test_name] if config.test_name.nil? || config.test_name && config.test_name.empty?
+        config.app_name = options[:app_name] if options[:app_name]
+        config.test_name = options[:test_name] if options[:test_name]
 
         if config.viewport_size.nil? || config.viewport_size && config.viewport_size.empty?
           config.viewport_size = Applitools::RectangleSize.from_any_argument(options[:viewport_size]) if options[:viewport_size]

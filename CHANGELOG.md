@@ -1,3 +1,6 @@
+## [3.17.16] - 2020-07-16
+### Fixed
+- The test name is not updated in case of double open->check->close call. [Trello 2011](https://trello.com/c/7UN1AbYU/2011-ruby-ufg-tests-creates-tests-out-of-order-when-classic-eyesopen-is-used)
 ## [3.17.15] - 2020-07-16
 ### Added
 - Added `VisualViewport` for UFG client. [Trello 1957](https://trello.com/c/jWvdBwex/1957-add-visual-viewport-support-in-the-ui-for-mobile-devices)
