@@ -28,13 +28,24 @@ module Applitools::Appium
     def device_pixel_ratio(executor)
       session_info = session_capabilities(executor)
       return session_info['pixelRatio'].to_f if session_info['pixelRatio']
-      Applitools::Selenium::Eyes::UNKNOWN_DEVICE_PIXEL_RATIO
+      1
     end
 
     def status_bar_height(executor)
       session_info = session_capabilities(executor)
       return session_info['statBarHeight'].to_i if session_info['statBarHeight']
       0
+    end
+
+    def viewport_rect(executor)
+      session_info = session_capabilities(executor)
+      return session_info['viewportRect'] if session_info['viewportRect']
+      {
+        'left' => 0,
+        'top' => 0,
+        'width' => 0,
+        'height' => 0
+      }
     end
 
     def session_capabilities(executor)

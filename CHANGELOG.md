@@ -1,3 +1,6 @@
+## [3.17.18] - 2020-08-01
+### Fixed
+- appium region screenshot issue [Trello_1996](https://trello.com/c/bmD4fCbs/1996-appium-native-ruby-error-with-png-signature-for-targetregion)
 ## [3.17.17] - 2020-07-29
 ### Fixed
 - The availability to set :notify_on_completion manually for Applitools::BatchInfo. [Trello_2012](https://trello.com/c/OdYXtkFI/2012-batch-sequence-and-batch-notifications-are-not-working-in-the-ruby-selenium-sdk)

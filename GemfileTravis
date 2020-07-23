@@ -13,6 +13,7 @@ source "file://#{ENV['PWD']}/pkg" do
   #gem 'eyes_calabash'
   gem 'eyes_core'
   gem 'eyes_capybara'
+  gem 'eyes_appium'
 end
 
 CURRENT_RUBY_VERSION = Gem::Version.new RUBY_VERSION

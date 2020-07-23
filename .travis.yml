@@ -38,12 +38,12 @@ jobs:
   include:
     - stage: "Unit Tests"
       name: "Unit Tests"
-      script: bundle exec rake unit_tests:travis
+      script: bundle exec rake travis:unit_tests
     - stage: "Visual tests"
-      name: "Classic Selenium"
-      script: bundle exec rake travis_selenium
-    - script: bundle exec rake travis_vg
+      script: bundle exec rake travis:vg_tests
       name: "Visual Grid"
+    - script: bundle exec rake travis:appium_tests
+      name: "eyes_appium tests"
     - stage: "Ruby Coverage tests"
       name: "Ruby Coverage tests"
       script: yarn ruby:prod
