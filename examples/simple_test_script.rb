@@ -3,6 +3,7 @@
 require_relative '../lib/eyes_selenium'
 require 'logger'
 require 'openssl'
+require 'webdrivers'
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
 eyes = Applitools::Selenium::Eyes.new(runner: Applitools::ClassicRunner.new)

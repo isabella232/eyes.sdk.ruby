@@ -48,10 +48,11 @@ module Applitools
         match_window_data.convert_strict_regions_coordinates
         match_window_data.convert_content_regions_coordinates
         match_window_data.convert_accessibility_regions_coordinates
+        match_window_data.replace_last = false
         match_result = perform_match(match_window_data)
       else
-        passed_ignore_mismatch = match_window_data.ignore_mismatch
         app_output = app_output_provider.app_output(region_provider, last_screenshot)
+        last_image_digest = app_output.screenshot.image.sha256
         match_window_data.app_output = app_output
         match_window_data.convert_ignored_regions_coordinates
         match_window_data.convert_floating_regions_coordinates
@@ -59,43 +60,36 @@ module Applitools
         match_window_data.convert_strict_regions_coordinates
         match_window_data.convert_content_regions_coordinates
         match_window_data.convert_accessibility_regions_coordinates
-        match_window_data.ignore_mismatch = true
-        start = Time.now
+        match_window_data.replace_last = false
         match_result = perform_match(match_window_data)
-        retry_time = Time.now - start
 
         block_retry = if block_given?
                         yield(match_result)
                       else
                         false
                       end
+        start = Time.now
+        retry_time = 0
 
         while retry_time < retry_timeout && !(block_retry || match_result.as_expected?)
           sleep MATCH_INTERVAL
           app_output = app_output_provider.app_output(region_provider, last_screenshot)
-          match_window_data.app_output = app_output
-          match_window_data.convert_ignored_regions_coordinates
-          match_window_data.convert_floating_regions_coordinates
-          match_window_data.convert_layout_regions_coordinates
-          match_window_data.convert_strict_regions_coordinates
-          match_window_data.convert_content_regions_coordinates
-          match_window_data.convert_accessibility_regions_coordinates
-          match_window_data.ignore_mismatch = true
-          match_result = perform_match(match_window_data)
+          image_digest = app_output.screenshot.image.sha256
+          if image_digest == last_image_digest
+            logger.info('Got the same screenshot in retry. Not sending to the server.')
+          else
+            match_window_data.app_output = app_output
+            match_window_data.convert_ignored_regions_coordinates
+            match_window_data.convert_floating_regions_coordinates
+            match_window_data.convert_layout_regions_coordinates
+            match_window_data.convert_strict_regions_coordinates
+            match_window_data.convert_content_regions_coordinates
+            match_window_data.convert_accessibility_regions_coordinates
+            match_window_data.replace_last = true
+            match_result = perform_match(match_window_data)
+          end
+          last_image_digest = image_digest
           retry_time = Time.now - start
-        end
-
-        unless block_retry || match_result.as_expected?
-          app_output = app_output_provider.app_output(region_provider, last_screenshot)
-          match_window_data.app_output = app_output
-          match_window_data.convert_ignored_regions_coordinates
-          match_window_data.convert_floating_regions_coordinates
-          match_window_data.convert_layout_regions_coordinates
-          match_window_data.convert_strict_regions_coordinates
-          match_window_data.convert_content_regions_coordinates
-          match_window_data.convert_accessibility_regions_coordinates
-          match_window_data.ignore_mismatch = passed_ignore_mismatch
-          match_result = perform_match(match_window_data)
         end
       end
 

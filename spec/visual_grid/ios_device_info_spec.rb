@@ -1,3 +1,4 @@
+Applitools::EyesLogger.log_handler = Logger.new(STDOUT)
 RSpec.describe 'iOS device info' do
   context 'accepts iOS device names' do
     before do
@@ -73,8 +74,8 @@ RSpec.describe 'iOS device info' do
     before do
       eyes.configure do |c|
         c.add_browsers(device1, device2)
-        c.logger = Applitools::EyesLogger.new(STDOUT) unless ENV['TRAVIS']
       end
+      eyes.log_handler = Logger.new(STDOUT) unless ENV['TRAVIS']
       driver.get('http://applitools.github.io/demo')
     end
 

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'digest'
 
 module Applitools
   class Screenshot < Delegator
@@ -91,6 +92,10 @@ module Applitools
       def restore
         ::ChunkyPNG::Image.from_datastream @datastream
       end
+
+      def sha256
+        Digest::SHA2.new(256).hexdigest(@datastream.to_s)
+      end
     end
 
     class Image < self
@@ -114,6 +119,10 @@ module Applitools
 
       def __setobj__(obj)
         @image = obj
+      end
+
+      def sha256
+        Digest::SHA2.new(256).hexdigest(@image.to_datastream.to_s)
       end
     end
   end

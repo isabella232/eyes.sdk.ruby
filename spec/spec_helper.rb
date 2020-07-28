@@ -25,6 +25,12 @@ RSpec.configure do |config|
     allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:match_window) do
       true
     end
+
+    allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:put_dom).and_return('https://dom.location.url')
+    allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:put_screenshot).and_return('https://screenshot.location.url')
+    allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:rendering_info).and_return({})
+    allow_any_instance_of(Applitools::Connectivity::ServerConnector).to receive(:close_batch).with(any_args)
+
   end
 
   config.before clear_environment: true do

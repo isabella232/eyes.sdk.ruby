@@ -24,6 +24,7 @@ module Applitools
             'ForceMismatch' => false,
             'IgnoreMatch' => false,
             'IgnoreMismatch' => false,
+            'ReplaceLast' => false,
             'Trim' => {
               'Enabled' => false
             },
@@ -311,6 +312,15 @@ module Applitools
 
     def ignore_mismatch
       current_data['IgnoreMismatch']
+    end
+
+    def replace_last
+      current_data['Options']['ReplaceLast']
+    end
+
+    def replace_last=(value)
+      Applitools::ArgumentGuard.one_of?(value, 'value', [TrueClass, FalseClass])
+      current_data['Options']['ReplaceLast'] = value
     end
 
     def tag

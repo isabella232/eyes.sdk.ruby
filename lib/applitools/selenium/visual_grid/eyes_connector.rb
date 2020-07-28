@@ -21,6 +21,7 @@ module Applitools
         self.dummy_region_provider = RegionProvider.new
         self.dont_get_title = false
         self.driver_lock = options[:driver_lock]
+        self.should_match_window_run_once_on_timeout = true
       end
 
       def ensure_config
@@ -59,6 +60,11 @@ module Applitools
         )
         self.current_uuid = nil
         check_result
+      end
+
+      def start_session
+        super
+        self.should_match_window_run_once_on_timeout = true
       end
 
       def base_agent_id

@@ -280,7 +280,6 @@ module Applitools
           self.last_screenshot = result.screenshot
         end
 
-        self.should_match_window_run_once_on_timeout = true
         self.failed = true
         logger.info "Mistmatch! #{tag}" unless running_session.new_session?
 
@@ -614,27 +613,7 @@ module Applitools
     end
 
     def get_app_output_with_screenshot(region_provider, _last_screenshot)
-      dom_url = ''
       captured_dom_data = dom_data
-      unless captured_dom_data.empty?
-        begin
-          logger.info 'Processing DOM..'
-          dom_url = server_connector.post_dom_json(captured_dom_data, runner.rendering_info(server_connector)) do |json|
-            io = StringIO.new
-            gz = Zlib::GzipWriter.new(io)
-            gz.write(json.encode('UTF-8'))
-            gz.close
-            result = io.string
-            io.close
-            result
-          end
-          logger.info 'Done'
-          logger.info dom_url
-        rescue Applitools::EyesError => e
-          logger.warn e.message
-          dom_url = nil
-        end
-      end
       logger.info 'Getting screenshot...'
       screenshot = capture_screenshot
       logger.info 'Done getting screenshot!'
@@ -646,21 +625,41 @@ module Applitools
 
       screenshot = yield(screenshot) if block_given?
 
-      if screenshot
-        self.screenshot_url = server_connector.put_screenshot(
-          runner.rendering_info(server_connector),
-          screenshot
-        )
-      end
-
       logger.info 'Getting title...'
       a_title = title
       logger.info 'Done!'
       Applitools::AppOutputWithScreenshot.new(
         Applitools::AppOutput.new(a_title, screenshot).tap do |o|
           o.location = region.location unless region.empty?
-          o.dom_url = dom_url unless dom_url && dom_url.empty?
-          o.screenshot_url = screenshot_url if respond_to?(:screenshot_url) && !screenshot_url.nil?
+          o.on_need_screenshot_url do
+            return unless screenshot
+            server_connector.put_screenshot(
+              runner.rendering_info(server_connector),
+              screenshot
+            )
+          end
+          o.on_need_dom_url do
+            unless captured_dom_data.empty?
+              begin
+                logger.info 'Processing DOM..'
+                dom_url = server_connector.post_dom_json(captured_dom_data, runner.rendering_info(server_connector)) do |json|
+                  io = StringIO.new
+                  gz = Zlib::GzipWriter.new(io)
+                  gz.write(json.encode('UTF-8'))
+                  gz.close
+                  result = io.string
+                  io.close
+                  result
+                end
+                logger.info 'Done'
+                logger.info dom_url
+              rescue Applitools::EyesError => e
+                logger.warn e.message
+                dom_url = nil
+              end
+              dom_url
+            end
+          end
         end,
         screenshot,
         allow_empty_screenshot

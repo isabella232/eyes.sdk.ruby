@@ -1,3 +1,5 @@
+### Updated
+- Screenshot retry mechanism is now more efficient. [Trello 1866](https://trello.com/c/KyxkI6Bu)
 ## [3.17.16] - 2020-07-16
 ### Fixed
 - The test name is not updated in case of double open->check->close call. [Trello 2011](https://trello.com/c/7UN1AbYU/2011-ruby-ufg-tests-creates-tests-out-of-order-when-classic-eyesopen-is-used)
