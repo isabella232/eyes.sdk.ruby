@@ -1,3 +1,6 @@
+## [3.17.17] - 2020-07-29
+### Fixed
+- The availability to set :notify_on_completion manually for Applitools::BatchInfo. [Trello_2012](https://trello.com/c/OdYXtkFI/2012-batch-sequence-and-batch-notifications-are-not-working-in-the-ruby-selenium-sdk)
 ### Updated
 - Screenshot retry mechanism is now more efficient. [Trello 1866](https://trello.com/c/KyxkI6Bu)
 ## [3.17.16] - 2020-07-16
