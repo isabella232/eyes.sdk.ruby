@@ -123,7 +123,7 @@ module Applitools
         end
 
         script = <<-END
-          #{Applitools::Selenium::Scripts::PROCESS_PAGE_AND_POLL} return __processPageAndSerializePoll();
+          #{Applitools::Selenium::Scripts::PROCESS_PAGE_AND_POLL} return __processPageAndSerializePoll(document, {skipResources: [#{visual_grid_manager.resource_cache.urls_to_skip}]});
         END
         render_task = nil
         target.default_full_page_for_vg

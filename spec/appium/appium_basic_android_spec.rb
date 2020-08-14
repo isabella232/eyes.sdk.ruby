@@ -6,7 +6,7 @@ RSpec.describe 'Android Basic test', appium: true do
       platformName: 'android',
       os_version: '9.0',
       app: 'eyes_sdk_ruby_android_app',
-      'browserstack.appium_version': '1.17.1'
+      'browserstack.appium_version': '1.17.0'
     }
   end
 

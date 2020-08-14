@@ -1,3 +1,6 @@
+## [3.17.19] - 2020-08-18
+### Updated
+- Skip resources list for UFG is implemented [Trello_1974](https://trello.com/c/44xq8dze/1974-dom-snapshot-should-accept-a-skip-list-for-fetched-resources)
 ## [3.17.18] - 2020-08-01
 ### Fixed
 - appium region screenshot issue [Trello_1996](https://trello.com/c/bmD4fCbs/1996-appium-native-ruby-error-with-png-signature-for-targetregion)

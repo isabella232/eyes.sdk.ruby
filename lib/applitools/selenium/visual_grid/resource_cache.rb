@@ -11,6 +11,15 @@ module Applitools
         self.semaphore = Mutex.new
       end
 
+      def keys
+        cache_map.keys
+      end
+
+      def urls_to_skip
+        return nil if keys.empty?
+        '"' + keys.map(&:to_s).join('", "') + '"'
+      end
+
       def contains?(url)
         semaphore.synchronize do
           check_key(url)

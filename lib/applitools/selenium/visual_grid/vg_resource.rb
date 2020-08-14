@@ -15,6 +15,7 @@ module Applitools
 
       class << self
         def parse_blob_from_script(blob, options = {})
+          return new(blob['url'], "application/X-error-response-#{blob['errorStatusCode']}", blob['value'] || '') if blob['errorStatusCode']
           content = Base64.decode64(blob['value'])
           new(blob['url'], blob['type'], content, options)
         end
