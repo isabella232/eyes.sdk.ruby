@@ -14,7 +14,7 @@ branches:
     - /^v[0-9]+\.[0-9]+.[0-9]+$/
 before_install:
   - gem install builder
-  - BUILD_ONLY=true rake clean build
+  - BUILD_ONLY=true rake clobber clean build
   - cd pkg; mkdir gems; mv ./*.gem ./gems; gem generate_index; cd ..
 before_script:
   - nvm install 14.5.0

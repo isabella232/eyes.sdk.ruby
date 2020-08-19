@@ -3,7 +3,8 @@
 
 require 'rake/clean'
 require 'securerandom'
-CLOBBER.include 'pkg'
+require_relative 'lib/eyes_consts'
+CLOBBER.include ['pkg', Applitools::JS_PATH]
 
 require 'bundler/gem_helper'
 Bundler::GemHelper.install_tasks name: 'eyes_core'
@@ -12,6 +13,28 @@ Bundler::GemHelper.install_tasks name: 'eyes_selenium'
 Bundler::GemHelper.install_tasks name: 'eyes_calabash'
 Bundler::GemHelper.install_tasks name: 'eyes_capybara'
 Bundler::GemHelper.install_tasks name: 'eyes_appium'
+
+namespace :applitools do
+  namespace :js do
+    task :install_node_modules do
+      Dir.chdir('lib/applitools/selenium/scripts') do
+        sh "yarn install"
+      end
+      require_relative 'lib/applitools/selenium/scripts/templates'
+    end
+
+    task :process_page_and_poll do
+      Dir.chdir(Applitools::SCRIPT_TEMPLATES_PATH) do
+        output = File.open('process_page_and_poll.rb', 'w')
+        output.write(Applitools::Selenium::ScriptTemplates::PROCESS_PAGE_AND_POLL_RB)
+        output.close
+      end
+    end
+
+    task :scripts => [:install_node_modules, :process_page_and_poll]
+  end
+end
+task :build => 'applitools:js:scripts'
 
 unless ENV['BUILD_ONLY'] && !ENV['BUILD_ONLY'].empty?
   require 'rspec/core/rake_task'

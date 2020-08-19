@@ -4,6 +4,7 @@ require 'forwardable'
 require 'delegate'
 require 'time'
 require_relative 'require_utils'
+require_relative 'eyes_consts'
 
 module Applitools
   extend Applitools::RequireUtils

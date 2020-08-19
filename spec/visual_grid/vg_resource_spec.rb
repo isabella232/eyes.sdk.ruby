@@ -87,4 +87,20 @@ RSpec.describe 'vg_resource' do
       )
     end.to_not raise_error
   end
+
+  context 'Read from blob' do
+    context 'Error resource' do
+      let(:good_blob) { {'url' => 'https://google.com', 'type' => 'text/html', 'value' => 'VGVzdCBjb250ZW50'} }
+      let(:error_blob) { {'url' => 'https://google.com', 'type' => nil, 'value' => '', 'errorStatusCode' => 403} }
+      it 'common' do
+        resource = Applitools::Selenium::VGResource.parse_blob_from_script(good_blob)
+        expect(resource.json_data.keys).to_not include('errorStatusCode'.to_sym)
+      end
+
+      it 'with error' do
+        resource = Applitools::Selenium::VGResource.parse_blob_from_script(error_blob)
+        expect(resource.json_data.keys).to include('errorStatusCode'.to_sym)
+      end
+    end
+  end
 end

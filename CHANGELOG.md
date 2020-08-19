@@ -1,3 +1,7 @@
+## [3.17.20] - 2020-08-20
+### fixed
+- Skip resources list: the errorStatusCode is passed to the server for UFG resources (if present) [Trello_2101](https://trello.com/c/vw3Ag8eO/2101-sdk-doesnt-pass-errorstatuscode-for-ufg-resources-if-an-error-occurred)
+
 ## [3.17.19] - 2020-08-18
 ### Updated
 - Skip resources list for UFG is implemented [Trello_1974](https://trello.com/c/44xq8dze/1974-dom-snapshot-should-accept-a-skip-list-for-fetched-resources)

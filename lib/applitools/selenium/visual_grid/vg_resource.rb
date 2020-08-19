@@ -8,14 +8,18 @@ module Applitools
   module Selenium
     class VGResource
       include Applitools::Jsonable
-      json_fields :contentType, :hash, :hashFormat
+      json_fields :contentType, :hash, :hashFormat, :errorStatusCode
       attr_accessor :url, :content, :handle_discovered_resources_block
       alias content_type contentType
       alias content_type= contentType=
 
       class << self
         def parse_blob_from_script(blob, options = {})
-          return new(blob['url'], "application/X-error-response-#{blob['errorStatusCode']}", blob['value'] || '') if blob['errorStatusCode']
+          return new(
+            blob['url'],
+            "application/X-error-response-#{blob['errorStatusCode']}",
+            blob['value'] || ''
+          ).tap {|r| r.error_status_code = blob['errorStatusCode']} if blob['errorStatusCode']
           content = Base64.decode64(blob['value'])
           new(blob['url'], blob['type'], content, options)
         end
